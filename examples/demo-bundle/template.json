@@ -1,0 +1,81 @@
+{
+  "siteName": "Kopi Senja",
+  "language": "id",
+  "siteType": "website",
+  "aiDescription": "Kedai kopi hangat di sudut kota — biji lokal, roasting sendiri, tempat kerja yang nyaman.",
+  "theme": {
+    "colorMode": "light",
+    "colors": {
+      "primary": "#92400e",
+      "secondary": "#57534e",
+      "background": "#fffbf5",
+      "foreground": "#1c1917",
+      "accent": "#f59e0b"
+    },
+    "fonts": { "heading": "Poppins", "body": "Inter", "headingSize": 48, "bodySize": 16 },
+    "radius": 12,
+    "spacing": "normal"
+  },
+  "siteSections": [
+    {
+      "type": "navbar",
+      "position": "header",
+      "content": { "siteName": "Kopi Senja", "ctaText": "Pesan Meja", "ctaUrl": "#kontak" }
+    },
+    {
+      "type": "footer",
+      "position": "footer",
+      "content": { "text": "© 2026 Kopi Senja — biji lokal, cerita hangat." }
+    }
+  ],
+  "pages": [
+    {
+      "title": "Beranda",
+      "slug": "",
+      "sections": [
+        {
+          "type": "hero",
+          "variant": "u:@hero-split",
+          "content": {
+            "headline": "Kopi Senja, tempat cerita bermula",
+            "subheadline": "Kedai kopi hangat di sudut kota — biji lokal, roasting sendiri.",
+            "ctaText": "Lihat Menu",
+            "ctaUrl": "#menu",
+            "images": [{ "url": "__IMG__:cozy coffee shop interior warm light", "alt": "Suasana kedai" }]
+          }
+        },
+        {
+          "type": "features-grid",
+          "content": {
+            "heading": "Kenapa Kopi Senja",
+            "subheading": "Tiga hal yang kami jaga sejak hari pertama.",
+            "features": [
+              { "title": "Biji lokal pilihan", "description": "Kerja sama langsung dengan petani Gayo dan Kintamani.", "icon": "☕" },
+              { "title": "Roasting sendiri", "description": "Profil sangrai disesuaikan tiap batch, selalu segar.", "icon": "🔥" },
+              { "title": "Ruang kerja nyaman", "description": "WiFi kencang, stopkontak di tiap meja, musik pelan.", "icon": "💻" }
+            ]
+          }
+        },
+        {
+          "type": "cta",
+          "content": {
+            "heading": "Mampir sore ini?",
+            "description": "Reservasi meja atau tanya menu musiman lewat WhatsApp.",
+            "buttonText": "Hubungi Kami",
+            "buttonUrl": "#kontak"
+          }
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "key": "hero-split",
+      "sectionType": "hero",
+      "name": "Hero Split Kopi Senja",
+      "description": "Hero dua kolom: teks + satu foto besar, CTA tunggal.",
+      "mood": ["warm"],
+      "fits": "headline pendek dengan satu foto suasana yang kuat"
+    }
+  ]
+}
