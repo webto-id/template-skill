@@ -9,7 +9,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   "siteType": "website",                 // "website" | "landing" | "personal"
   "aiDescription": "Kedai kopi ...",     // optional; seeds AI context for buyers
   "theme": { ... },                       // PARTIAL theme — only what differs (below)
-  "siteSections": [                       // chrome: PLATFORM variants only
+  "siteSections": [                       // chrome: platform variant id or "u:@<key>"
     { "type": "navbar", "position": "header", "variant": "centered",
       "content": { "siteName": "Kopi Senja" } },
     { "type": "footer", "position": "footer", "variant": "simple", "content": {} }
@@ -33,9 +33,9 @@ One JSON object. Two halves: a **site definition** (what the admin import format
 
 ## Rules
 
-- **`u:@<key>`** refs are legal only in `pages[].sections[]` and must name an entry in `variants[]` whose `sectionType` matches the section's `type`. The uploader supplies each entry's `source` from `sections/<key>.astro`; a `<key>.sample.json` next to it becomes the variant's showcase content.
+- **`u:@<key>`** refs are legal in `pages[].sections[]` and `siteSections[]`, and must name an entry in `variants[]` whose `sectionType` matches the section's `type`. The uploader supplies each entry's `source` from `sections/<key>.astro`; a `<key>.sample.json` next to it becomes the variant's showcase content.
 - **Plain `u:<id>` refs are rejected** — a bundle is self-contained. Platform variant ids (from the catalog) are fine.
-- **Chrome (`siteSections`) takes platform variants only** (navbar/banner/footer can't be WVF). Exactly one navbar with `position: "header"` is required.
+- **Chrome (`siteSections`) may use platform variants or bundle `u:@<key>` refs** (WVF chrome allowed since 2026-09-04 — see the variant skill's chrome rules: context props injected, root in normal flow). Exactly one navbar with `position: "header"` is required.
 - **`key`**: lowercase letters/digits/hyphens, 2–48 chars, unique, equal to the file basename.
 - Omit `subdomain` and any listing metadata — the platform derives the one and the listing editor owns the other.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
