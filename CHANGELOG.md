@@ -34,3 +34,11 @@
   review, new keys become new variants; template.json overwrites the draft's
   structure/theme).
 
+## 0.1.4 — 2026-09-06
+
+- Revision step now covers **partial uploads**: patch a section by uploading
+  only its changed `.astro` (no template.json; matched by bundle key, site
+  structure untouched), or add/restructure with template.json + just the
+  changed/new files — declared variants without an attached file keep their
+  stored version.
+
