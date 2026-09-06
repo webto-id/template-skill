@@ -26,3 +26,11 @@
   (in-browser compile + render on the template.json theme, before anything is
   created server-side).
 
+## 0.1.3 — 2026-09-06
+
+- Workflow step 8: **revisions via "Update dari Bundle"** — re-uploading an
+  edited bundle over an existing template matches variants by bundle key
+  (identical sources skipped, changed ones become a new version and re-enter
+  review, new keys become new variants; template.json overwrites the draft's
+  structure/theme).
+
