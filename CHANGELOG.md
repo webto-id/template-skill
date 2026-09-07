@@ -42,3 +42,17 @@
   changed/new files — declared variants without an attached file keep their
   stored version.
 
+## 0.1.5 — 2026-09-07
+
+Field-report hardening (three findings from real conversions):
+
+- **Never degrade interactive designs to dodge script review** (new step 3):
+  sliders/tabs/accordions keep their `<script is:inline>`; the effect
+  library covers motion only, never functional interactivity.
+- `variants[].name` **must be the English Title-Case form of the key, word
+  for word** ("price-menu" → "Price Menu") so dashboard labels always lead
+  back to the source file.
+- Inline image editing is now lint-enforced platform-side
+  (`edit-image-missing` fails `--strict` when a content-driven `<img>`
+  lacks `data-edit-image`).
+

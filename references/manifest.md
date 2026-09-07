@@ -24,7 +24,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
       ] }
   ],
   "variants": [                           // one entry per sections/<key>.astro
-    { "key": "hero-split", "sectionType": "hero", "name": "Hero Split Kopi",
+    { "key": "hero-split", "sectionType": "hero", "name": "Hero Split",
       "description": "Hero dua kolom dengan foto besar", "mood": ["warm"],
       "fits": "headline pendek + satu foto kuat" }
   ]
@@ -36,7 +36,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
 - **`u:@<key>`** refs are legal in `pages[].sections[]` and `siteSections[]`, and must name an entry in `variants[]` whose `sectionType` matches the section's `type`. The uploader supplies each entry's `source` from `sections/<key>.astro`; a `<key>.sample.json` next to it becomes the variant's showcase content.
 - **Plain `u:<id>` refs are rejected** — a bundle is self-contained. Platform variant ids (from the catalog) are fine.
 - **Chrome (`siteSections`) may use platform variants or bundle `u:@<key>` refs** (WVF chrome allowed since 2026-09-04 — see the variant skill's chrome rules: context props injected, root in normal flow). Exactly one navbar with `position: "header"` is required.
-- **`key`**: lowercase letters/digits/hyphens, 2–48 chars, unique, equal to the file basename.
+- **`key`**: lowercase letters/digits/hyphens, 2–48 chars, unique, equal to the file basename. **`name` = the key in English Title Case, word for word** ("price-menu" → "Price Menu") so the dashboard label always leads back to the file.
 - **Max 8 `pages`**, exactly one with `slug: ""` (the homepage). Other slugs are slugified on insert. Several pages may reference the same `u:@<key>` — one .astro, reused with different `content` per page.
 - Omit `subdomain` and any listing metadata — the platform derives the one and the listing editor owns the other.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
