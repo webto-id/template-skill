@@ -61,7 +61,39 @@ A PARTIAL of the site theme; unspecified keys get platform defaults. Useful keys
 }
 ```
 
-Beware: color/font values that fail validation are silently replaced by defaults — double-check hex codes. Map the SOURCE template's brand color to `primary`, its secondary brand to `secondary`, warm highlights to `accent`; pick the two dominant font families only (heading + body). Then let the sections speak tokens (`bg-primary`, `var(--font-heading)`) — that is what makes the whole template re-themeable by the buyer.
+Beware: color/font values that fail validation are silently replaced by defaults — double-check hex codes.
+
+### Fonts: match, never default
+
+`fonts.heading`/`fonts.body` accept ONLY the platform's 60 Google Fonts families (an unknown name is silently swapped for the default — the design's typography just vanishes). When the source template's font is not on the list, **find the closest listed family by classification — do NOT fall back to Inter** unless the source really is a neutral neo-grotesque. Judge by letterforms: geometric vs humanist, serif contrast, x-height, width, weight.
+
+The full list, grouped: modern sans `Inter Poppins Roboto "Open Sans" Lato Montserrat Raleway Nunito "Nunito Sans" "Work Sans" "DM Sans" "Plus Jakarta Sans" Manrope "Space Grotesk" Rubik Mulish Quicksand Karla Barlow Archivo Kanit Cabin "Josefin Sans" Comfortaa "IBM Plex Sans" "Source Sans 3" "PT Sans" "Noto Sans" Ubuntu "Fira Sans"`; display/condensed `Oswald "Bebas Neue" Anton "Archivo Black" "Roboto Condensed" "Titillium Web"`; serif `"Playfair Display" Merriweather Lora Bitter "Roboto Slab" "PT Serif" "Libre Baskerville" "Crimson Text" "EB Garamond" "Cormorant Garamond" "Source Serif 4" "IBM Plex Serif" "Abril Fatface"`; script `"Dancing Script" Pacifico Caveat "Shadows Into Light" Satisfy "Great Vibes" "Permanent Marker" "Indie Flower" Kalam`; mono `"JetBrains Mono" "Roboto Mono" "Fira Code" "Space Mono" "IBM Plex Mono"`.
+
+Common commercial/system fonts → nearest listed:
+
+| Source font | Use |
+|---|---|
+| Helvetica, Arial, Neue Haas, Aktiv | Inter |
+| Futura, Century Gothic, Avant Garde | Poppins (or Josefin Sans for elegant/tall) |
+| Avenir, Circular, Graphik, Sofia Pro | Manrope or DM Sans |
+| Gotham, Proxima Nova, Montserrat-like caps | Montserrat |
+| Brandon Grotesque | Josefin Sans |
+| Gill Sans, Verdana | Cabin or Lato |
+| Frutiger, Myriad, Segoe UI | Open Sans or Source Sans 3 |
+| DIN, Eurostile | Barlow or Archivo |
+| Trade Gothic / any condensed grotesque | Oswald or Roboto Condensed |
+| Impact, Druk, Compacta | Anton or Archivo Black |
+| Didot, Bodoni | Playfair Display (Abril Fatface for poster sizes) |
+| Garamond (any cut) | EB Garamond (Cormorant Garamond for lighter, more fashion) |
+| Baskerville | Libre Baskerville |
+| Caslon, Minion, Sabon | Crimson Text or Lora |
+| Georgia, Times New Roman | PT Serif or Merriweather |
+| Rockwell, Museo Slab, Clarendon | Roboto Slab or Bitter |
+| Courier, Consolas, SF Mono | Roboto Mono or JetBrains Mono |
+| Snell Roundhand, Allura, wedding scripts | Great Vibes (Dancing Script for casual) |
+| Handwritten/marker | Caveat, Permanent Marker, or Kalam |
+
+Custom font FILES (@font-face) cannot be carried at all — same rule: translate to the nearest listed family. Map the SOURCE template's brand color to `primary`, its secondary brand to `secondary`, warm highlights to `accent`; pick the two dominant font families only (heading + body). Then let the sections speak tokens (`bg-primary`, `var(--font-heading)`) — that is what makes the whole template re-themeable by the buyer.
 
 ## Images
 

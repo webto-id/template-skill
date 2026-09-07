@@ -66,3 +66,13 @@ Field-report hardening (three findings from real conversions):
   conversion invented "elegant"/"romantic" and the whole upload was rejected;
   the platform's upload page now also reports unknown moods per variant key
   before anything is sent.
+
+## 0.1.7 — 2026-09-07
+
+- Fonts: when the source template's font is outside the platform's 60-family
+  list, match it to the NEAREST listed family instead of defaulting to Inter.
+  `references/manifest.md` § "Fonts: match, never default" carries the grouped
+  whitelist and a commercial-font mapping table (Futura → Poppins, Gotham →
+  Montserrat, Didot → Playfair Display, Garamond → EB Garamond, ...). Unknown
+  names are silently swapped for the default by the platform, so a wrong name
+  erases the typography without any error.
