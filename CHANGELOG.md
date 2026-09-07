@@ -76,3 +76,12 @@ Field-report hardening (three findings from real conversions):
   Montserrat, Didot → Playfair Display, Garamond → EB Garamond, ...). Unknown
   names are silently swapped for the default by the platform, so a wrong name
   erases the typography without any error.
+
+## 0.1.8 — 2026-09-07
+
+- Images: a third legal form, `"__ILLU__:<2-4 keywords>"`, resolves to a
+  platform illustration (`/illu/<id>.svg`) recolored to the buyer's live
+  theme at serve time — for decorative flat-illustration slots where a photo
+  would feel wrong. Indonesian and English keywords both match; an unmatched
+  query resolves to an empty field, never a broken image. Photos stay the
+  default for heroes, galleries, products, and people.

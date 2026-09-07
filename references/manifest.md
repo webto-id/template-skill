@@ -97,9 +97,10 @@ Custom font FILES (@font-face) cannot be carried at all — same rule: translate
 
 ## Images
 
-Two legal forms, everywhere (manifest `content` and `.sample.json` alike):
+Three legal forms, everywhere (manifest `content` and `.sample.json` alike):
 
 - `"__IMG__:<english search query>"` — resolved to a distinct Unsplash photo per occurrence at upload. Best default.
+- `"__ILLU__:<2-4 keywords>"` — resolved to a PLATFORM ILLUSTRATION (`/illu/<id>.svg`) that is recolored to the buyer's live theme at serve time. Use for decorative flat-illustration slots where a photo would feel wrong (abstract values/features, blobs, wave dividers, small scene spots: kopi, warung, wedding rings, kurir, kamera, grafik, kalender — Indonesian or English keywords both match). An unmatched query resolves to an EMPTY field, never a broken image; photos stay the default for heroes, galleries, products, and people.
 - A direct `https://images.unsplash.com/...` or pexels URL.
 
 The source template's own assets (its `/img/...`, CDN links, stock previews) are **never** carried over — licensing.
