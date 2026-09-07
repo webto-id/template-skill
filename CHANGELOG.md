@@ -56,3 +56,13 @@ Field-report hardening (three findings from real conversions):
   (`edit-image-missing` fails `--strict` when a content-driven `<img>`
   lacks `data-edit-image`).
 
+
+## 0.1.6 — 2026-09-07
+
+- `references/manifest.md`: `mood` is documented as the CLOSED 14-value enum
+  (`editorial luxurious airy minimal technical precise corporate playful warm
+  casual bold brutal dense dark`, max 4) with nearest-mood mappings
+  ("elegant" → `luxurious`, "romantic" → `warm`, "fun" → `playful`). A real
+  conversion invented "elegant"/"romantic" and the whole upload was rejected;
+  the platform's upload page now also reports unknown moods per variant key
+  before anything is sent.
