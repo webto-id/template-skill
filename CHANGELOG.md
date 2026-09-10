@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.9 — 2026-09-10
+
+- `references/manifest.md`: new **Language** table — a bundle mixes AI-wizard
+  catalog metadata (`variants[].name`/`description`/`fits`/`mood`, always
+  English prose) with real showcase content (`siteName`, `aiDescription`,
+  section `content`, `.sample.json` — the bundle's own `language`, Bahasa
+  Indonesia by default) with per-`.astro` field doc comments (English prose,
+  see the companion variant skill's `wvf.md` §1.2b). The example
+  `description`/`fits` values were themselves in Indonesian, contradicting
+  the rule stated right next to them — rewritten to English to match every
+  built-in variant's own catalog text.
+
 ## 0.1.0 — 2026-09-04
 
 - First public release, matching the platform's Upload Bundle feature (webto.id →

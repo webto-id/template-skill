@@ -25,8 +25,8 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   ],
   "variants": [                           // one entry per sections/<key>.astro
     { "key": "hero-split", "sectionType": "hero", "name": "Hero Split",
-      "description": "Hero dua kolom dengan foto besar", "mood": ["warm"],
-      "fits": "headline pendek + satu foto kuat" }
+      "description": "Two-column hero with a large photo on the right", "mood": ["warm"],
+      "fits": "short headline + one strong photo" }
   ]
 }
 ```
@@ -38,9 +38,24 @@ One JSON object. Two halves: a **site definition** (what the admin import format
 - **Chrome (`siteSections`) may use platform variants or bundle `u:@<key>` refs** (WVF chrome allowed since 2026-09-04 — see the variant skill's chrome rules: context props injected, root in normal flow). Exactly one navbar with `position: "header"` is required.
 - **`key`**: lowercase letters/digits/hyphens, 2–48 chars, unique, equal to the file basename. **`name` = the key in English Title Case, word for word** ("price-menu" → "Price Menu") so the dashboard label always leads back to the file.
 - **`mood` is a CLOSED enum — never invent values** (an unknown mood rejects the whole upload): `editorial` `luxurious` `airy` `minimal` `technical` `precise` `corporate` `playful` `warm` `casual` `bold` `brutal` `dense` `dark`, max 4 per variant. Map the design's feel to the NEAREST listed mood ("elegant" → `luxurious`, "romantic" → `warm`, "fun" → `playful`).
+- **`description` and `mood` are REQUIRED** (`description` 15–300 chars) — they are what the AI wizard's variant catalog reads to decide whether this variant fits a buyer's site, not editor-facing copy. Write `description` as a factual layout clause, no superlatives ("Two-column hero with a large photo on the right", not "A stunning modern hero"). Write `fits` as the content shape this variant actually needs ("short headline + one strong photo", not a restatement of the description). **Both in English prose**, same convention as `name` and every built-in variant's own catalog text — see "Language" below. A bundle missing either on a variant fails upload with a clear per-key message.
 - **Max 8 `pages`**, exactly one with `slug: ""` (the homepage). Other slugs are slugified on insert. Several pages may reference the same `u:@<key>` — one .astro, reused with different `content` per page.
 - Omit `subdomain` and any listing metadata — the platform derives the one and the listing editor owns the other.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
+
+## Language
+
+A bundle mixes catalog metadata (read by the AI wizard, in English) with actual site content (read by the buyer, in the site's own language) — the same distinction the companion variant skill's `wvf.md` §1.2b covers for a single `.astro` file, extended to everything else in a bundle:
+
+| Field | Language | Why |
+|---|---|---|
+| `variants[].name` | **English Title Case**, word-for-word from `key` | Dashboard label must trace back to the source file |
+| `variants[].description` / `.fits` / `.mood` | **English prose** (`mood` from the closed enum, which is already English) | Same AI-wizard catalog every built-in variant's `description` feeds — see `wvf.md` §1.2b |
+| `.astro` field doc comments inside each `sections/<key>.astro` | **English prose** | See `wvf.md` §1.2b — this manifest doesn't change that rule |
+| `siteName`, `aiDescription`, `pages[].sections[].content`, chrome `content` | The bundle's own `language` (Bahasa Indonesia by default) | This is the actual showcase copy a buyer previews before replacing it — real content, not catalog metadata |
+| `<key>.sample.json` | Same as `content` above | It's the variant's own showcase content, shown standalone in the marketplace preview |
+| `__IMG__:<query>` | English search query | Passed straight to Unsplash search |
+| `__ILLU__:<keywords>` | Indonesian or English, either matches | Matched against a bilingual keyword index |
 
 ## Theme extraction (`theme`)
 
