@@ -87,6 +87,8 @@ The full list, grouped: modern sans `Inter Poppins Roboto "Open Sans" Lato Monts
 
 Added 2026-09-11 (modern sans, display, serif, mono — fills the gap for the "new wave" grotesques and editorial serifs that kept showing up in Astro/Tailwind sources): modern sans `Lexend Outfit Sora Figtree Onest Urbanist "Hanken Grotesk" "Albert Sans" "Be Vietnam Pro" "Public Sans" "Red Hat Display" Epilogue Chivo Sen "Instrument Sans" "Schibsted Grotesk" "Familjen Grotesk" "Libre Franklin"`; display `"Bricolage Grotesque" Unbounded Syne Geist`; serif `Fraunces Marcellus "Instrument Serif" "Zilla Slab" Newsreader Prata`; mono `"Geist Mono" "DM Mono"`. **Lexend, Marcellus, Instrument Serif, Instrument Sans, and Geist are now supported directly** — stop mapping these to a substitute, use them as-is.
 
+The renderer requests every weight 100–900 for whichever family you pick (fixed 2026-09-11 — it used to request only 400/500/600/700, so `font-light`/`font-thin` silently rendered at 400 with no error, since browsers never synthesize a lighter weight than what's loaded). Most families are variable and genuinely have the whole range; a handful are static single-weight (`Marcellus`, `Instrument Serif`, `Prata`, `Abril Fatface`) — picking one of these and then using `font-semibold`/`font-bold` in your variant renders faux-bold (browser-synthesized), which is expected, not a bug. If a design leans on real weight contrast, prefer a family with a wider range.
+
 Common commercial/system fonts → nearest listed:
 
 | Source font | Use |

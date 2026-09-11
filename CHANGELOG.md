@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.12 — 2026-09-11
+
+- The renderer now requests every font weight **100–900**, not just 400/500/600/700 (heading) or 400/500/600 (body). A seller verified `ayudira-beauty` live and found 18 elements using `font-light` (weight 300) silently rendering at 400 — the weight was never loaded, and browsers never synthesize a LIGHTER face than what's available (only faux-bold heavier). Fixed at the platform level, live now with no action needed on already-uploaded bundles (theme is re-read on every render).
+- Documented: a handful of whitelisted families are static single-weight (`Marcellus`, `Instrument Serif`, `Prata`, `Abril Fatface`) — `font-semibold`/`font-bold` on these renders browser-synthesized faux-bold, which is expected. Prefer a wider-range family when a design leans on real weight contrast.
+
 ## 0.1.11 — 2026-09-11
 
 - Font whitelist expanded **60 → 93** families: 30 curated additions verified live against the actual Google Fonts CSS API (Lexend, Outfit, Sora, Figtree, Onest, Urbanist, Hanken Grotesk, Albert Sans, Be Vietnam Pro, Public Sans, Red Hat Display, Epilogue, Chivo, Sen, Instrument Sans, Schibsted Grotesk, Familjen Grotesk, Libre Franklin, Bricolage Grotesque, Unbounded, Syne, Geist, Fraunces, Marcellus, Instrument Serif, Zilla Slab, Newsreader, Prata, Geist Mono, DM Mono). **Lexend, Marcellus, Instrument Serif/Sans, and Geist no longer need a substitute** — use them as-is.
