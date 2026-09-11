@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.10 — 2026-09-11
+
+Grew out of a real conversion's parity-with-source report (`shadcn-astro-zolt-landing-page` → `bimo-portfolio`, 6th conversion by the same seller). Four skill-only changes, no platform behavior involved:
+
+- New **"Source: an Astro + Tailwind repo"** section — a source repo (not just rendered HTML) deserves a different work order: read `tailwind.config`/`@theme` for exact tokens (including `oklch()` → hex conversion), map `src/components/**` 1:1 to variants, screenshot the live demo per section AND probe interactivity with Playwright before writing any WVF (a static screenshot alone reliably under-counts what's actually interactive), and use `src/data/*.json`/content collections as sample content instead of inventing copy.
+- New step 9, **"Check parity, don't just eyeball it"** — screenshot source vs. compiled preview at 390/768/1280px per section, as you finish each one. The real-world case for this: a heading that measured 37.2px instead of the source's 24px, a bento photo that didn't fill its column, and a heading that wrapped differently — all invisible to a plain look, all caught by an actual side-by-side.
+- New **Fidelity checklist** section — typography at all 3 breakpoints, spacing rhythm, radius, shadows, hover/focus states, dark mode, motion — an explicit list to run through before calling a conversion done.
+- New **"What will not be copied"** section — WebGL/canvas, npm-dependent components, per-render-random content, floating/fixed chrome, the source's own licensed fonts/assets. Meant to be hand-copied into the listing description so buyer expectations match what's actually for sale.
+
 ## 0.1.9 — 2026-09-10
 
 - `references/manifest.md`: new **Language** table — a bundle mixes AI-wizard
