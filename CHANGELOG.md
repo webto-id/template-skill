@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.11 — 2026-09-11
+
+- Font whitelist expanded **60 → 93** families: 30 curated additions verified live against the actual Google Fonts CSS API (Lexend, Outfit, Sora, Figtree, Onest, Urbanist, Hanken Grotesk, Albert Sans, Be Vietnam Pro, Public Sans, Red Hat Display, Epilogue, Chivo, Sen, Instrument Sans, Schibsted Grotesk, Familjen Grotesk, Libre Franklin, Bricolage Grotesque, Unbounded, Syne, Geist, Fraunces, Marcellus, Instrument Serif, Zilla Slab, Newsreader, Prata, Geist Mono, DM Mono). **Lexend, Marcellus, Instrument Serif/Sans, and Geist no longer need a substitute** — use them as-is.
+- **An unsupported `theme.fonts`/invalid `theme.colors` value now REJECTS the bundle upload with a clear per-field error**, not a silent swap. This came from a seller finding two of their own already-live templates had shipped with the wrong heading font (Lexend/Marcellus, both pre-dating this expansion) — `--strict`, the upload dry-run, and admin review all reported clean because the platform silently substituted the default with zero signal anywhere. Fixed at the platform level; this release just documents it.
+- New `theme.pageTransitions: "none" | "fade"` (default `"none"`) — a site-wide CSS cross-fade between page navigations, no JS, respects `prefers-reduced-motion`. Relevant to nearly every Astro-source conversion: `<ClientRouter />` is Astro's own recommended default, so most Astro templates ship SPA-like navigation that a bare conversion otherwise drops.
+
 ## 0.1.10 — 2026-09-11
 
 Grew out of a real conversion's parity-with-source report (`shadcn-astro-zolt-landing-page` → `bimo-portfolio`, 6th conversion by the same seller). Four skill-only changes, no platform behavior involved:

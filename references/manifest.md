@@ -72,17 +72,20 @@ A PARTIAL of the site theme; unspecified keys get platform defaults. Useful keys
   "radius": 12,                                // 0-24 px
   "maxWidth": "6xl",                           // "3xl".."7xl"
   "spacing": "normal",                         // "compact" | "normal" | "spacious"
-  "textGradient": "subtle"                     // "none" | "subtle" | "vibrant"
+  "textGradient": "subtle",                    // "none" | "subtle" | "vibrant"
+  "pageTransitions": "none"                    // "none" | "fade" — site-wide cross-fade between pages, added 2026-09-11
 }
 ```
 
-Beware: color/font values that fail validation are silently replaced by defaults — double-check hex codes.
+An invalid hex or unsupported font name in `theme.colors`/`theme.fonts` now REJECTS the upload with a clear per-field error (fixed 2026-09-11 — it used to swap silently for the default, which is how the wrong heading font shipped on two live templates before anyone noticed). Double-check hex codes and font names regardless; a wrong-but-valid value (a legal hex that's just not the source's actual color) still passes through unnoticed.
 
 ### Fonts: match, never default
 
-`fonts.heading`/`fonts.body` accept ONLY the platform's 60 Google Fonts families (an unknown name is silently swapped for the default — the design's typography just vanishes). When the source template's font is not on the list, **find the closest listed family by classification — do NOT fall back to Inter** unless the source really is a neutral neo-grotesque. Judge by letterforms: geometric vs humanist, serif contrast, x-height, width, weight.
+`fonts.heading`/`fonts.body` accept ONLY the platform's 93 Google Fonts families (expanded from 60, 2026-09-11). **An unknown name now REJECTS the whole bundle upload with a clear error naming the field** — it used to swap silently for the default with zero signal, which is how two live templates shipped with the wrong heading font before anyone noticed. When the source template's font genuinely isn't on the list, **find the closest listed family by classification — do NOT fall back to Inter** unless the source really is a neutral neo-grotesque. Judge by letterforms: geometric vs humanist, serif contrast, x-height, width, weight.
 
 The full list, grouped: modern sans `Inter Poppins Roboto "Open Sans" Lato Montserrat Raleway Nunito "Nunito Sans" "Work Sans" "DM Sans" "Plus Jakarta Sans" Manrope "Space Grotesk" Rubik Mulish Quicksand Karla Barlow Archivo Kanit Cabin "Josefin Sans" Comfortaa "IBM Plex Sans" "Source Sans 3" "PT Sans" "Noto Sans" Ubuntu "Fira Sans"`; display/condensed `Oswald "Bebas Neue" Anton "Archivo Black" "Roboto Condensed" "Titillium Web"`; serif `"Playfair Display" Merriweather Lora Bitter "Roboto Slab" "PT Serif" "Libre Baskerville" "Crimson Text" "EB Garamond" "Cormorant Garamond" "Source Serif 4" "IBM Plex Serif" "Abril Fatface"`; script `"Dancing Script" Pacifico Caveat "Shadows Into Light" Satisfy "Great Vibes" "Permanent Marker" "Indie Flower" Kalam`; mono `"JetBrains Mono" "Roboto Mono" "Fira Code" "Space Mono" "IBM Plex Mono"`.
+
+Added 2026-09-11 (modern sans, display, serif, mono — fills the gap for the "new wave" grotesques and editorial serifs that kept showing up in Astro/Tailwind sources): modern sans `Lexend Outfit Sora Figtree Onest Urbanist "Hanken Grotesk" "Albert Sans" "Be Vietnam Pro" "Public Sans" "Red Hat Display" Epilogue Chivo Sen "Instrument Sans" "Schibsted Grotesk" "Familjen Grotesk" "Libre Franklin"`; display `"Bricolage Grotesque" Unbounded Syne Geist`; serif `Fraunces Marcellus "Instrument Serif" "Zilla Slab" Newsreader Prata`; mono `"Geist Mono" "DM Mono"`. **Lexend, Marcellus, Instrument Serif, Instrument Sans, and Geist are now supported directly** — stop mapping these to a substitute, use them as-is.
 
 Common commercial/system fonts → nearest listed:
 
