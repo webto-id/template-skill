@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.14 — 2026-09-12
+
+- Recommended folder layout is now `sections/<key>.astro`, `samples/<key>.sample.json`, `assets/<filename>` (was: samples and assets flat at bundle root). Pairing has always matched every file by filename alone, regardless of which folder it's in — this is a convention change only, not a platform change; a flat bundle still uploads identically. The bundled `examples/demo-bundle` now follows the new layout.
+- `SKILL.md`'s "Content and images" step and "what will not be copied" list now mention `asset:<filename>` (0.1.13 added the feature but missed updating these two spots).
+
 ## 0.1.13 — 2026-09-12
 
 - New image form: `"asset:<filename>"` — the seller's OWN image (their own photography/art, not a stock library or someone else's assets). Ship the file (PNG/WebP/JPG, ≤ 2 MB, filename `[A-Za-z0-9._-]` only, ≤ 20 files / 8 MB per bundle) alongside `template.json`; the platform stores it once at a permanent platform-level location, shared by every buyer (never duplicated per site), and cleans it up only once no variant references it any more. SVG is not accepted yet (unsanitized SVG can carry script). Before this, a source's own art could never be carried over at all — this narrows that to "not someone ELSE's art," which is what the licensing concern actually was.
