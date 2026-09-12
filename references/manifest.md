@@ -56,6 +56,7 @@ A bundle mixes catalog metadata (read by the AI wizard, in English) with actual 
 | `<key>.sample.json` | Same as `content` above | It's the variant's own showcase content, shown standalone in the marketplace preview |
 | `__IMG__:<query>` | English search query | Passed straight to Unsplash search |
 | `__ILLU__:<keywords>` | Indonesian or English, either matches | Matched against a bilingual keyword index |
+| `asset:<filename>` | Exact match to the uploaded file's name — never translated, never altered | It's an identity, not a language string; a filename outside `[A-Za-z0-9._-]` is rejected, never silently renamed |
 
 ## Theme extraction (`theme`)
 
@@ -117,13 +118,14 @@ Custom font FILES (@font-face) cannot be carried at all — same rule: translate
 
 ## Images
 
-Three legal forms, everywhere (manifest `content` and `.sample.json` alike):
+Four legal forms, everywhere (manifest `content` and `.sample.json` alike):
 
-- `"__IMG__:<english search query>"` — resolved to a distinct Unsplash photo per occurrence at upload. Best default.
+- `"asset:<filename>"` — the seller's OWN image (their own photography/art — never someone else's stock library, icon pack, or a competitor's product shot; licensing still applies, just to a narrower thing). Added 2026-09-12: ship the actual file (PNG/WebP/JPG, ≤ 2 MB, filename `[A-Za-z0-9._-]` only, ≤ 20 files / 8 MB per bundle) alongside `template.json` when uploading — the platform stores it once at a permanent platform-level location, shared by every buyer (never duplicated per site), cleaned up only once no variant references it any more. SVG is NOT an accepted `asset:` format yet (unsanitized SVG can carry script) — convert decorative art to PNG/WebP first. Use this whenever the source's own imagery is what makes the design — a hero photograph, a product shot, a logo mark — not a generic scene a stock query would serve just as well.
+- `"__IMG__:<english search query>"` — resolved to a distinct Unsplash photo per occurrence at upload. Best default when there's no real asset from the source worth carrying over.
 - `"__ILLU__:<2-4 keywords>"` — resolved to a PLATFORM ILLUSTRATION (`/illu/<id>.svg`) that is recolored to the buyer's live theme at serve time. Use for decorative flat-illustration slots where a photo would feel wrong (abstract values/features, blobs, wave dividers, small scene spots: kopi, warung, wedding rings, kurir, kamera, grafik, kalender — Indonesian or English keywords both match). An unmatched query resolves to an EMPTY field, never a broken image; photos stay the default for heroes, galleries, products, and people.
 - A direct `https://images.unsplash.com/...` or pexels URL.
 
-The source template's own assets (its `/img/...`, CDN links, stock previews) are **never** carried over — licensing.
+Anything from the source under a license that doesn't transfer to the platform (stock photography, someone else's icon set, a purchased asset pack) is still **never** carried over.
 
 ## What happens on upload
 

@@ -12,6 +12,7 @@ my-template/
   template.json            # the manifest: site name, theme, chrome, pages, variants[] metadata
   sections/hero-1.astro    # one WVF file per authored section (key = file basename)
   hero-1.sample.json       # optional showcase content per section
+  hero-photo.png           # optional: seller's own image, referenced as "asset:hero-photo.png"
 ```
 
 The platform compiles every `.astro` **strict**, validates the whole manifest, creates the variants under the seller's account (auto-submitted for admin review), and assembles a **template draft** the seller lists from the listing editor.
@@ -82,6 +83,8 @@ Some things are correctly out of reach for a marketplace variant — not a gap t
 | One `.sample.json` | 16 KB |
 | Pages per marketplace template | 8 (one must be the homepage, `slug: ""`) |
 | Variants per account (total) | 100 |
+| One `asset:` image | 2 MB, PNG/WebP/JPG only (no SVG yet) |
+| `asset:` images per bundle | 20 files, 8 MB total |
 
 ## Quality bar
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.13 — 2026-09-12
+
+- New image form: `"asset:<filename>"` — the seller's OWN image (their own photography/art, not a stock library or someone else's assets). Ship the file (PNG/WebP/JPG, ≤ 2 MB, filename `[A-Za-z0-9._-]` only, ≤ 20 files / 8 MB per bundle) alongside `template.json`; the platform stores it once at a permanent platform-level location, shared by every buyer (never duplicated per site), and cleans it up only once no variant references it any more. SVG is not accepted yet (unsanitized SVG can carry script). Before this, a source's own art could never be carried over at all — this narrows that to "not someone ELSE's art," which is what the licensing concern actually was.
+
 ## 0.1.12 — 2026-09-11
 
 - The renderer now requests every font weight **100–900**, not just 400/500/600/700 (heading) or 400/500/600 (body). A seller verified `ayudira-beauty` live and found 18 elements using `font-light` (weight 300) silently rendering at 400 — the weight was never loaded, and browsers never synthesize a LIGHTER face than what's available (only faux-bold heavier). Fixed at the platform level, live now with no action needed on already-uploaded bundles (theme is re-read on every render).
