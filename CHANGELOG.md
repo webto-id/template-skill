@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.15 — 2026-09-12
+
+- Documented that `__IMG__:<query>` resolves to a DIFFERENT photo per occurrence — the same query in `template.json` and in a `.sample.json` gives two different pictures of the same subject, which reads as a bug when comparing the template preview against that variant's marketplace preview. Use `asset:<filename>` when a slot must be identical in both.
+
 ## 0.1.14 — 2026-09-12
 
 - Recommended folder layout is now `sections/<key>.astro`, `samples/<key>.sample.json`, `assets/<filename>` (was: samples and assets flat at bundle root). Pairing has always matched every file by filename alone, regardless of which folder it's in — this is a convention change only, not a platform change; a flat bundle still uploads identically. The bundled `examples/demo-bundle` now follows the new layout.
