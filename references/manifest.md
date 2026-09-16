@@ -116,6 +116,15 @@ Common commercial/system fonts → nearest listed:
 
 Custom font FILES (@font-face) cannot be carried at all — same rule: translate to the nearest listed family. Map the SOURCE template's brand color to `primary`, its secondary brand to `secondary`, warm highlights to `accent`; pick the two dominant font families only (heading + body). Then let the sections speak tokens (`bg-primary`, `var(--font-heading)`) — that is what makes the whole template re-themeable by the buyer.
 
+## Power-word markers in text
+
+Any section text field can carry inline emphasis the site renders for the buyer: `**bold**`, `*italic*`, `==highlight==`, `%%block%%`, `@@circled@@`, `++brush++`, `__underline__`, `^^accent^^`, `[text](url)`. The rendering is central and automatic (see the variant skill's `wvf.md` §2.5) — nothing in a bundle declares or enables it. Two rules that matter here:
+
+- **Use them sparingly in `template.json` section `content`**, where they DO render — one emphasized fragment in a headline is a design decision, a page full of them is noise. They are the seller's tool, so prefer leaving the choice to the buyer unless the source design clearly emphasizes a specific word.
+- **Never in `*.sample.json`.** Neither preview surface runs the marker pass, so a marker there shows as raw `==…==` in the variant's own marketplace listing and reads as a bug.
+
+And when authoring the `.astro` itself: a marker pair only survives inside ONE text node, so a field whose value you split across elements (per-word animation) silently loses them — same `wvf.md` §2.5.
+
 ## Images
 
 Four legal forms, everywhere (manifest `content` and `.sample.json` alike):

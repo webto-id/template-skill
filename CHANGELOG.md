@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.16 — 2026-09-16
+
+- New `manifest.md` § **Power-word markers in text**: inline emphasis (`**bold**`, `==highlight==`, `%%block%%`, `@@circled@@`, `++brush++`, `__underline__`, `^^accent^^`, `[text](url)`) renders automatically in `template.json` section `content` — nothing declares or enables it — but **never** in `*.sample.json`, because no preview surface runs the marker pass and a marker there shows raw in the variant's own listing. Use them sparingly in content: emphasis is the buyer's tool. Authoring consequence (a field split across elements loses its markers) and the mechanism itself live in the variant skill's `wvf.md` §2.5.
+
 ## 0.1.15 — 2026-09-12
 
 - Documented that `__IMG__:<query>` resolves to a DIFFERENT photo per occurrence — the same query in `template.json` and in a `.sample.json` gives two different pictures of the same subject, which reads as a bug when comparing the template preview against that variant's marketplace preview. Use `asset:<filename>` when a slot must be identical in both.
