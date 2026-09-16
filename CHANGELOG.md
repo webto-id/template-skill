@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.17 — 2026-09-16
+
+- Limits corrected — the table still claimed a flat "100 variants per account", which no longer exists. Now: **12 authored variants per UPLOAD** (payload-bound: 12 x 128 KB already fills the 2 MB budget), **24 per TEMPLATE in total** (grow past one upload's worth with a partial upload — `template.json` + just the new file), and **300 STANDALONE variants per account**, which a bundle's variants no longer count against at all. The old flat cap made the platform's own limits contradict each other (10 template drafts x 12 variants = 120 > 100) and walled sellers off permanently, since an approved variant can never be deleted.
+
 ## 0.1.16 — 2026-09-16
 
 - New `manifest.md` § **Power-word markers in text**: inline emphasis (`**bold**`, `==highlight==`, `%%block%%`, `@@circled@@`, `++brush++`, `__underline__`, `^^accent^^`, `[text](url)`) renders automatically in `template.json` section `content` — nothing declares or enables it — but **never** in `*.sample.json`, because no preview surface runs the marker pass and a marker there shows raw in the variant's own listing. Use them sparingly in content: emphasis is the buyer's tool. Authoring consequence (a field split across elements loses its markers) and the mechanism itself live in the variant skill's `wvf.md` §2.5.

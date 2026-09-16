@@ -79,12 +79,13 @@ Some things are correctly out of reach for a marketplace variant — not a gap t
 
 | What | Limit |
 |---|---|
-| Authored variants per bundle | 12 |
+| Authored variants per UPLOAD | 12 |
+| Authored variants per TEMPLATE (total) | 24 — go past one upload's worth with a partial upload (`template.json` + just the new file) |
 | Whole upload payload | 2 MB |
 | One `.astro` source | 128 KB |
 | One `.sample.json` | 16 KB |
 | Pages per marketplace template | 8 (one must be the homepage, `slug: ""`) |
-| Variants per account (total) | 100 |
+| STANDALONE variants per account | 300 — a bundle's variants belong to their template and do NOT count here |
 | One `asset:` image | 2 MB, PNG/WebP/JPG only (no SVG yet) |
 | `asset:` images per bundle | 20 files, 8 MB total |
 
