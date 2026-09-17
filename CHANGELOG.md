@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.22 — 2026-09-17
+
+- `SKILL.md` workflow step 2 no longer says "Chrome: prefer platform variants". Navbar, banner and footer are converted as WVF like every other section, so the header and footer carry the template's design; a platform chrome variant is reused only when it genuinely matches the source. The technical rules are unchanged (context props, root in normal flow, automatic sticky), plus a reminder to put `data-site-name` on the brand text. Matches the README change in 0.1.21.
+
 ## 0.1.21 — 2026-09-17
 
 - `README.md` usage example no longer tells the model to map chrome to platform variants. Navbar, banner and footer can be authored as bundle WVF since 0.1.1, and forms since 0.1.20 — the skill decides per section whether to reuse a platform variant or author one, so the prompt only needs to ask for the conversion and the validation.
