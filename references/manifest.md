@@ -70,13 +70,29 @@ A PARTIAL of the site theme; unspecified keys get platform defaults. Useful keys
   "darkColors": { /* same 5 keys */ },
   "fonts":  { "heading": "Poppins", "body": "Inter",
               "headingSize": 48, "bodySize": 16 },   // 24-96 / 12-24 px
-  "radius": 12,                                // 0-24 px
-  "maxWidth": "6xl",                           // "3xl".."7xl"
-  "spacing": "normal",                         // "compact" | "normal" | "spacious"
+  "radius": 12,                                // 0-24 px → --radius; every rounded-* token follows it
+  "layout": "fullscreen",                      // "fullscreen" | "boxed"
+  "maxWidth": "6xl",                           // "3xl" 768px | "4xl" 896 | "5xl" 1024 | "6xl" 1152 | "7xl" 1280
+  "spacing": "normal",                         // "compact" | "normal" | "spacious"  (section rhythm x0.65 / x1 / x1.35)
   "textGradient": "subtle",                    // "none" | "subtle" | "vibrant"
   "pageTransitions": "none"                    // "none" | "fade" — site-wide cross-fade between pages, added 2026-09-11
 }
 ```
+
+### Layout keys: what each one actually does, and how to read it off a source
+
+These are the Style-tab settings the buyer can change later, so a conversion should set them to what the SOURCE does — not leave them on defaults and compensate inside the variants.
+
+| Key | Effect on the live site | Read it from the source |
+|---|---|---|
+| `layout` | `fullscreen`: sections span the viewport (default). `boxed`: the whole page body is capped at `maxWidth`, centred, with a shadow, and the body background (`bodyBackground` image/SVG) paints on `<html>` AROUND it — that is the only mode where the body background is visible. | A source whose page sits as a framed column on a coloured/patterned backdrop is `boxed`; anything edge-to-edge is `fullscreen`. |
+| `maxWidth` | Sets `--site-max-width`, which every `<Container>` uses (`3xl` 48rem/768px · `4xl` 56rem/896 · `5xl` 64rem/1024 · `6xl` 72rem/1152 · `7xl` 80rem/1280). In `boxed` mode it caps the body too. | The source's container `max-width` (`max-w-6xl`, `1152px`, `72rem`). Pick the nearest; never hard-code a width inside a variant to fake a different one. |
+| `spacing` | Multiplies every outer `<section>`'s `py-*` through Tailwind's `--spacing` var: `compact` 0.65, `normal` 1, `spacious` 1.35. No per-variant work; viewport-height heroes (`min-h-[Nvh]`) are unaffected by design. | Write variants with `normal` rhythm (`py-14 sm:py-20`-ish) and let this key carry the source's overall airiness. A source with `py-32` everywhere is `spacious`, not 32 hard-coded in each file. |
+| `radius` | `--radius`; the theme radius scale (`rounded-sm/md/lg/xl`) derives from it. 0 = sharp. | The source's dominant corner radius on cards/buttons. |
+| `textGradient` | `--gradient-from/--gradient-to`, consumed by headlines that opt in (`bg-clip-text text-transparent` + `linear-gradient(to right, var(--gradient-from), var(--gradient-to))`). `none` collapses both to `foreground` (plain text); `subtle` = primary → primary mixed 30% toward accent; `vibrant` = primary → accent. | Default is `subtle`. Set `none` when the source's headlines are flat — otherwise a gradient headline appears that the source never had. |
+| `pageTransitions` | `fade`: CSS `@view-transition` cross-fade on navigation, zero JS, ignored by unsupported browsers and by `prefers-reduced-motion`. | Astro sources with `<ClientRouter />`, or any source with SPA-like page fades → `fade`. |
+
+`colorMode`, `bodyBackground` (an image or a platform SVG pattern behind a boxed page) and `fonts.headingSize`/`bodySize` round out the block; all are optional and default sensibly.
 
 An invalid hex or unsupported font name in `theme.colors`/`theme.fonts` now REJECTS the upload with a clear per-field error (fixed 2026-09-11 — it used to swap silently for the default, which is how the wrong heading font shipped on two live templates before anyone noticed). Double-check hex codes and font names regardless; a wrong-but-valid value (a legal hex that's just not the source's actual color) still passes through unnoticed.
 
