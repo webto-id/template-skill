@@ -114,7 +114,23 @@ Common commercial/system fonts → nearest listed:
 | Snell Roundhand, Allura, wedding scripts | Great Vibes (Dancing Script for casual) |
 | Handwritten/marker | Caveat, Permanent Marker, or Kalam |
 
-Custom font FILES (@font-face) cannot be carried at all — same rule: translate to the nearest listed family. Map the SOURCE template's brand color to `primary`, its secondary brand to `secondary`, warm highlights to `accent`; pick the two dominant font families only (heading + body). Then let the sections speak tokens (`bg-primary`, `var(--font-heading)`) — that is what makes the whole template re-themeable by the buyer.
+Custom font FILES (@font-face) cannot be carried at all — same rule: translate to the nearest listed family. Pick the two dominant font families only (heading + body), map the SOURCE template's brand color to `primary` and its secondary brand to `secondary`, and read the next section before you fill `accent`. Then let the sections speak tokens (`bg-primary`, `var(--font-heading)`) — that is what makes the whole template re-themeable by the buyer.
+
+### `accent` is a brand color, never the page's pale band tint
+
+This is the single easiest thing to get wrong here, because the wrong answer looks right for as long as you are working on it.
+
+A converted template almost always has a soft off-white band — `#f9f3ee`, `#f0f0f8`, `#e9e2d7`. It is tempting to call that the template's "highlight" and put it in `accent`. **Do not.** `accent` is a BRAND color slot: every palette the buyer can pick from the Style tab puts a saturated color there (teal `#0d9488`, amber `#d97706`, blue `#2563eb`), and `accent-foreground` is recomputed for contrast against whatever lands in it. A pale tint in that slot makes every `bg-accent` surface in your sections look correct in YOUR theme and unreadable in theirs — and you will not see it, because you are looking at your own palette the whole time.
+
+The band tint has **no slot at all**, and that is deliberate: `muted` and `card` are DERIVED from `background` (mixed 6% and 2% toward `foreground`), so a band stays a shade off the page under every palette and in dark mode. Your source's specific beige becomes a derived warm grey. That is the trade the platform makes on purpose — see the variant skill's `wvf.md` §6.1 for the full table and for which token each kind of surface should use.
+
+**So what goes in `accent` when the source has only one brand color?** In order:
+
+1. **A real second color from the source**, even a small one — the link color, a CTA hover, a badge, a chart series, the color on a "new" pill. Sources have more of these than they appear to.
+2. **A variation of `primary`** — a deeper or brighter shade of the same hue. Highlights then read as brand, which is almost always what the source intended anyway.
+3. **`primary` repeated exactly.** Redundant, but honest and harmless: accent surfaces simply become primary surfaces.
+
+**Do not omit the key to avoid deciding** — a missing `accent` defaults to amber `#f59e0b` (`#fbbf24` dark), which is a loud design choice, not a neutral one. And never put a near-white or near-background value there.
 
 ## Power-word markers in text
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.18 — 2026-09-17
+
+- **Fixed the instruction that was causing the mistake it was meant to prevent.** The theme paragraph said *"map … warm highlights to `accent`"*, and on a converted template the warm highlight IS the pale band tint — so that sentence put a near-white value in the `accent` slot in **7 of one seller's 8 templates**. `accent` is a BRAND color slot: every palette a buyer can pick from the Style tab puts a saturated color there, and `accent-foreground` is recomputed for contrast against it, so a pale tint makes every `bg-accent` surface look right in your theme and unreadable in theirs. The variant skill's `wvf.md` §6.1 has the full rule, but it is read while writing `.astro` files — long after `template.json` decided the palette — so the rule now lives here too, at the moment of the decision.
+- **Answers the question that follows immediately: what goes in `accent` when the source has only one brand color?** In order: a real second color from the source (link color, CTA hover, badge, chart series — sources have more of these than they appear to); a variation of `primary`; or `primary` repeated exactly, which is redundant but harmless. **Not** omitting the key — that defaults to amber `#f59e0b` (`#fbbf24` dark), a loud design choice rather than a neutral one — and never a near-white or near-background value.
+- States that the source's band tint has **no slot at all**: `muted` and `card` are derived from `background` (mixed 6% and 2% toward `foreground`), which is what makes a band stay a shade off the page under every palette and in dark mode. The specific beige is traded for that guarantee, on purpose.
+
 ## 0.1.17 — 2026-09-16
 
 - Limits corrected — the table still claimed a flat "100 variants per account", which no longer exists. Now: **12 authored variants per UPLOAD** (payload-bound: 12 x 128 KB already fills the 2 MB budget), **24 per TEMPLATE in total** (grow past one upload's worth with a partial upload — `template.json` + just the new file), and **300 STANDALONE variants per account**, which a bundle's variants no longer count against at all. The old flat cap made the platform's own limits contradict each other (10 template drafts x 12 variants = 120 > 100) and walled sellers off permanently, since an approved variant can never be deleted.
