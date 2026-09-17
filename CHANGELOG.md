@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.20 — 2026-09-17
+
+- **Forms are authorable.** A contact/order form no longer has to be one of the ten platform looks: write a `form`-type variant whose layout wraps `<FormFields />` (variant skill 0.1.33, `wvf.md` §5c) — the platform renders fields, honeypot, Turnstile and the submit runtime; you render the card, the pill, the underlined inputs and the sticker button. `SKILL.md` step 7 says so. Until now the form was the one section that could not follow a converted template's design.
+
 ## 0.1.19 — 2026-09-17
 
 - `manifest.md` theme block now covers **every layout key** and says what each one does on the live site, verified against the renderer: `layout` (`fullscreen` | `boxed` — boxed caps the body at `maxWidth`, centres it with a shadow, and is the only mode where `bodyBackground` is visible; it was not documented at all), `maxWidth` with its **pixel map** (`3xl` 768 · `4xl` 896 · `5xl` 1024 · `6xl` 1152 · `7xl` 1280 — so a source's `max-w-6xl`/`1152px` maps directly), `spacing` (multiplies every section's `py-*` by 0.65 / 1 / 1.35; write variants at normal rhythm and let this key carry the source's airiness), `radius`, `textGradient` (`none` = flat headlines; `subtle` = primary → 30% toward accent; `vibrant` = primary → accent — set `none` when the source's headlines are flat), `pageTransitions`. Each row also says how to read the value off the source instead of leaving defaults and compensating inside variants.
