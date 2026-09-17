@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.21 — 2026-09-17
+
+- `README.md` usage example no longer tells the model to map chrome to platform variants. Navbar, banner and footer can be authored as bundle WVF since 0.1.1, and forms since 0.1.20 — the skill decides per section whether to reuse a platform variant or author one, so the prompt only needs to ask for the conversion and the validation.
+
 ## 0.1.20 — 2026-09-17
 
 - **Forms are authorable.** A contact/order form no longer has to be one of the ten platform looks: write a `form`-type variant whose layout wraps `<FormFields />` (variant skill 0.1.33, `wvf.md` §5c) — the platform renders fields, honeypot, Turnstile and the submit runtime; you render the card, the pill, the underlined inputs and the sticker button. `SKILL.md` step 7 says so. Until now the form was the one section that could not follow a converted template's design.

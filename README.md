@@ -22,7 +22,7 @@ Or download the zips from <https://docs.webto.id/downloads/html-to-webto-templat
 
 Ask your agent, for example:
 
-> Konversi template HTML ini menjadi bundle template webto. Chrome-nya petakan ke variant platform, section unik jadi WVF, lalu validasi tiap file dengan `variant-check --strict`.
+> Konversi template HTML ini menjadi bundle template webto, lalu validasi tiap file dengan `variant-check --strict`.
 
 Per-file check while authoring:
 
