@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.24 — 2026-09-18
+
+- **`variant-check` reads `template.json` on every per-file run** (`@webto-id/variant-check` 0.1.29). Running it on `sections/<key>.astro` now picks up the bundle manifest one level up with no flag, so `mood`, `description`, `sectionType` and `key` are checked locally against the platform's own enum instead of failing at upload — a 12-variant bundle rejected for four invented moods after a clean local run is what prompted this. `--manifest <file>` points at one explicitly, `--no-manifest` opts out.
+- **Error**: a mood outside the enum, more than 4 of them, a `description` under 15 characters, an unknown `sectionType`, a malformed or duplicated `key`, more than 12 variants in one upload, or a `sectionType` that disagrees with `--type`. **Warning**: `description`/`mood` absent (a patch-mode re-upload may omit them; `--strict` promotes both), a field name the upload would strip in silence (`moods`, `tags`), a legacy `hero-*` alias, and an `.astro` with no matching entry.
+- `SKILL.md` step 8 says to assemble the manifest (step 7) first, so both halves are validated on the same run.
+
 ## 0.1.23 — 2026-09-18
 
 - **New mood value: `calm`** (platform enum; needs an `apps/server` deploy), for the quiet end the list never had — `bold`, `brutal` and `playful` covered loud, and quiet sections piled up under `minimal`/`airy` until mood stopped separating variants inside one bundle. `manifest.md` also states that **energy is a different axis from composition** (`airy` = empty space, `minimal` = few elements; a spacious section with a 96px accent headline is `bold` AND `airy`) and that mood describes the LOOK, never the subject — "personal" or "for a clinic" belong in `description`/`fits`. New mappings: "structured" → `precise`, "direct" → `bold`, "calm/quiet" → `calm`.
