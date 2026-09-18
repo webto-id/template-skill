@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.23 — 2026-09-18
+
+- **New mood value: `calm`** (platform enum; needs an `apps/server` deploy), for the quiet end the list never had — `bold`, `brutal` and `playful` covered loud, and quiet sections piled up under `minimal`/`airy` until mood stopped separating variants inside one bundle. `manifest.md` also states that **energy is a different axis from composition** (`airy` = empty space, `minimal` = few elements; a spacious section with a 96px accent headline is `bold` AND `airy`) and that mood describes the LOOK, never the subject — "personal" or "for a clinic" belong in `description`/`fits`. New mappings: "structured" → `precise`, "direct" → `bold`, "calm/quiet" → `calm`.
+
 ## 0.1.22 — 2026-09-17
 
 - `SKILL.md` workflow step 2 no longer says "Chrome: prefer platform variants". Navbar, banner and footer are converted as WVF like every other section, so the header and footer carry the template's design; a platform chrome variant is reused only when it genuinely matches the source. The technical rules are unchanged (context props, root in normal flow, automatic sticky), plus a reminder to put `data-site-name` on the brand text. Matches the README change in 0.1.21.
