@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.25 — 2026-09-19
+
+- **`__ILLU__:` really is legal in image fields now.** The upload's validator rejected it with *"Must be a URL or image path"* although every import resolves it — a bundle using platform illustrations for its logo cloud failed the dry run while the identical content written as `__IMG__:` passed. Platform fix, needs an `apps/server` deploy; nothing in a bundle has to change.
+- `manifest.md` now states what an image field refuses: a relative path (`assets/logo.png`, `./foto.jpg`) is not one of the four legal forms. `variant-check` 0.1.30 reports it locally as `content-image-url` instead of leaving it for the dry run.
+
 ## 0.1.24 — 2026-09-18
 
 - **`variant-check` reads `template.json` on every per-file run** (`@webto-id/variant-check` 0.1.29). Running it on `sections/<key>.astro` now picks up the bundle manifest one level up with no flag, so `mood`, `description`, `sectionType` and `key` are checked locally against the platform's own enum instead of failing at upload — a 12-variant bundle rejected for four invented moods after a clean local run is what prompted this. `--manifest <file>` points at one explicitly, `--no-manifest` opts out.

@@ -167,6 +167,8 @@ Four legal forms, everywhere (manifest `content` and `.sample.json` alike):
 - `"__ILLU__:<2-4 keywords>"` — resolved to a PLATFORM ILLUSTRATION (`/illu/<id>.svg`) that is recolored to the buyer's live theme at serve time. Use for decorative flat-illustration slots where a photo would feel wrong (abstract values/features, blobs, wave dividers, small scene spots: kopi, warung, wedding rings, kurir, kamera, grafik, kalender — Indonesian or English keywords both match). An unmatched query resolves to an EMPTY field, never a broken image; photos stay the default for heroes, galleries, products, and people.
 - A direct `https://images.unsplash.com/...` or pexels URL.
 
+Nothing else is accepted in an image field: a relative path (`assets/logo.png`, `./foto.jpg`) fails the dry run with *"Must be a URL or image path"*. `variant-check` 0.1.30 reports the same thing locally as `content-image-url`. (Until 2026-09-18 the dry run also rejected `__ILLU__:` in those fields, although the import resolves it — that was a platform bug, now fixed; it needs an `apps/server` deploy.)
+
 Anything from the source under a license that doesn't transfer to the platform (stock photography, someone else's icon set, a purchased asset pack) is still **never** carried over.
 
 ## What happens on upload
