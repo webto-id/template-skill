@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.26 — 2026-09-19
+
+- **Chrome now honours the owner's per-page navigation switches.** A WVF navbar received the site's pages UNFILTERED (each platform navbar filters `showInNavbar` inside its own component, so the injected prop never was), and `footerPages` arrived as `{ label, url }` while the authoring contract documents `{ title, slug }` — so an uploaded footer rendered empty links and "show in footer" looked broken. Both fixed platform-side, needs an `apps/site` deploy; bundles need no change.
+- `SKILL.md` step 2 now states it: render `pages` in the navbar and `footerPages` in the footer as-is, `content.links` only for extra destinations. New warnings from CLI 0.1.31: `chrome-nav-pages-missing`, `chrome-footer-pages-missing`.
+
 ## 0.1.25 — 2026-09-19
 
 - **`__ILLU__:` really is legal in image fields now.** The upload's validator rejected it with *"Must be a URL or image path"* although every import resolves it — a bundle using platform illustrations for its logo cloud failed the dry run while the identical content written as `__IMG__:` passed. Platform fix, needs an `apps/server` deploy; nothing in a bundle has to change.
