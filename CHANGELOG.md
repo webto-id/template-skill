@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.27 — 2026-09-20
+
+- **Revisions start by pulling now.** A bundle upload is authoritative: a `template.json` older than the seller's Site Editor work silently overwrote it. The dashboard gained **Ekspor Bundle**, which writes the draft back out as the same folder shape (`template.json` + `sections/*.astro` + `samples/*.sample.json`), and the dry run now lists what an upload would change or destroy before anything is written. `SKILL.md` step 10 says to export first.
+- The export is a verified inverse of the import: exporting a draft and re-running the check must report nothing. What the format cannot carry is named at export time — blog posts, a page's ogImage, noindex, per-page pixel config, parent page.
+
 ## 0.1.26 — 2026-09-19
 
 - **Chrome now honours the owner's per-page navigation switches.** A WVF navbar received the site's pages UNFILTERED (each platform navbar filters `showInNavbar` inside its own component, so the injected prop never was), and `footerPages` arrived as `{ label, url }` while the authoring contract documents `{ title, slug }` — so an uploaded footer rendered empty links and "show in footer" looked broken. Both fixed platform-side, needs an `apps/site` deploy; bundles need no change.
