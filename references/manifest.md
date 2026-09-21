@@ -41,7 +41,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
 - **Energy is a different axis from composition.** `bold`/`brutal`/`playful` are the loud end, `calm` the quiet one; `airy` means empty space and `minimal` means few elements — neither implies a slow pace, and a spacious section with a 96px accent headline is `bold` AND `airy`. Without `calm`, quiet sections pile up under `minimal`/`airy` until the mood stops separating variants inside one bundle. And mood describes the LOOK, never the subject: "personal" or "for a clinic" belong in `description`/`fits`.
 - **`description` and `mood` are REQUIRED** (`description` 15–300 chars) — they are what the AI wizard's variant catalog reads to decide whether this variant fits a buyer's site, not editor-facing copy. Write `description` as a factual layout clause, no superlatives ("Two-column hero with a large photo on the right", not "A stunning modern hero"). Write `fits` as the content shape this variant actually needs ("short headline + one strong photo", not a restatement of the description). **Both in English prose**, same convention as `name` and every built-in variant's own catalog text — see "Language" below. A bundle missing either on a variant fails upload with a clear per-key message.
 - **Max 8 `pages`**, exactly one with `slug: ""` (the homepage). Other slugs are slugified on insert. Several pages may reference the same `u:@<key>` — one .astro, reused with different `content` per page.
-- Omit `subdomain` and any listing metadata — the platform derives the one and the listing editor owns the other.
+- Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
 
 ## Language
@@ -170,6 +170,45 @@ Four legal forms, everywhere (manifest `content` and `.sample.json` alike):
 Nothing else is accepted in an image field: a relative path (`assets/logo.png`, `./foto.jpg`) fails the dry run with *"Must be a URL or image path"*. `variant-check` 0.1.30 reports the same thing locally as `content-image-url`. (Until 2026-09-18 the dry run also rejected `__ILLU__:` in those fields, although the import resolves it — that was a platform bug, now fixed; it needs an `apps/server` deploy.)
 
 Anything from the source under a license that doesn't transfer to the platform (stock photography, someone else's icon set, a purchased asset pack) is still **never** carried over.
+
+## `listing`: the catalog copy, written once, here
+
+A template is sold from a listing, and every field of that listing is something
+this conversion already knows. Write them into `template.json` as a `listing`
+block and the seller publishes without typing any of it (and without spending an
+AI credit on the dashboard's "write my description" button):
+
+```json
+"listing": {
+  "name": "Studio Kalastra",
+  "title": "Studio Kalastra - Template Website Agency, Creative Studio & Konsultan",
+  "description": "Template satu halaman untuk agency kreatif ...",
+  "category": "Portofolio & Agency",
+  "tags": ["agency", "creative studio", "konsultan", "portofolio"]
+}
+```
+
+- **`name`** (2-60) is the SHORT name, and it is what every catalog card shows
+  under the thumbnail. Two or three words, the studio/brand the template is
+  built around — never the keyword line.
+- **`title`** (3-80) is the SEO line, shown on the detail page and in search
+  results. This is where the keywords go. Keeping these two apart is the whole
+  point: one field had to be both, so every card truncated a keyword string
+  mid-word.
+- **`description`** (≤5000) is markdown, the listing body a buyer reads. Say
+  what the template is for, what is inside (pages, sections), and who it fits.
+  Factual; no superlatives.
+- **`category`** must be one of the platform's own, exactly: `Bisnis & Jasa` ·
+  `Toko Online` · `Kuliner` · `Portofolio & Agency` · `Pendidikan & Kursus` ·
+  `Kesehatan & Kecantikan` · `Properti & Konstruksi` · `Travel & Wisata` ·
+  `Event & Wedding` · `Profil Personal` · `Komunitas & Organisasi` ·
+  `Teknologi & SaaS` · `Lainnya`. An invented category is rejected by the
+  upload — and would put the template in a facet the sidebar does not list.
+- **`tags`** up to 8, free-form, lowercase, the words a buyer would search.
+
+Everything here is a PROPOSAL: it is stored on the draft and prefills the
+publish form, where the seller edits it and sets the price. Nothing in this
+block creates a listing or sells anything.
 
 ## What happens on upload
 

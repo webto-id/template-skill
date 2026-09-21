@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.28 — 2026-09-21
+
+- **`template.json` now carries a `listing` block**, and step 7 says to write it: `name`, `title`, `description`, `category`, `tags`. The conversion has just read the whole source site to build the manifest, so this is the one moment the catalog copy is free — without it the seller types it at publish time, or spends an AI credit on the dashboard to regenerate what the converter already knew. Everything in the block is a proposal: it prefills the publish form, the seller still edits it and sets the price.
+- **`name` and `title` are two different things now.** `name` (2–60) is the short card name under every catalog thumbnail; `title` (3–80) is the SEO line for the detail page and search results. One field had to be both until now, which is why cards truncated keyword strings mid-word.
+- **`category` must be one of the platform's thirteen, exactly** — `manifest.md` lists them. An invented category is rejected by the upload, and `variant-check` 0.1.32 catches it locally, naming the real list.
+
 ## 0.1.27 — 2026-09-20
 
 - **Revisions start by pulling now.** A bundle upload is authoritative: a `template.json` older than the seller's Site Editor work silently overwrote it. The dashboard gained **Ekspor Bundle**, which writes the draft back out as the same folder shape (`template.json` + `sections/*.astro` + `samples/*.sample.json`), and the dry run now lists what an upload would change or destroy before anything is written. `SKILL.md` step 10 says to export first.
