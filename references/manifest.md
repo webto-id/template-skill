@@ -61,7 +61,7 @@ A bundle mixes catalog metadata (read by the AI wizard, in English) with actual 
 
 ## Theme extraction (`theme`)
 
-A PARTIAL of the site theme; unspecified keys get platform defaults. Useful keys:
+A PARTIAL of the site theme; unspecified keys get platform defaults — on a first upload AND on an update (a key you drop from a theme you still send is RESET, and the dry run lists it). On an update only, omitting the `theme` block ENTIRELY leaves the draft's theme untouched. Useful keys:
 
 ```jsonc
 {

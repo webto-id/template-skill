@@ -38,6 +38,7 @@ The final gate is the platform's **Periksa** (dry run) on the Upload Bundle page
 |---|---|
 | `SKILL.md` | The workflow: segment → classify chrome vs sections → author/reuse → theme extraction → assemble → validate |
 | `references/manifest.md` | The exact `template.json` format, `u:@<key>` refs, limits, theme extraction |
+| `references/mcp.md` | Optional: uploading over the seller MCP server — setup, the dry-run/confirm loop, `baseRevision`, `webto.lock.json` |
 | `examples/demo-bundle/` | A complete bundle (Kopi Senja) that passes the platform dry run |
 
 ## Limits

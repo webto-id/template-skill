@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.29 — 2026-09-22
+
+- **The agent can upload now, not just hand over a folder.** webto.id has a seller MCP server (`https://api.webto.id/mcp`, personal access token from Settings → Security). New workflow step 12 and `references/mcp.md`: validate locally first (the server's dry run is rate limited, `variant-check` is not), upload bundle images yourself with `curl` via `begin_asset_upload` — never as base64 in a tool call — then `create_template_draft` / `update_template_draft`. It is optional: without the server connected, deliver the folder exactly as before. Never ask the seller to paste a token into the chat.
+- **Write tools dry-run by default.** Nothing is written until the report is clean AND the call is repeated with `confirm: true`. A retry loop gone wrong used to be able to fill the review queue; now it produces reports.
+- **`webto.lock.json`.** Every export and every real write returns a `lock`: the draft's `siteId`, its `revision`, and the variant id behind each bundle key. Save it beside `template.json`. It is not part of an upload (the uploader steps over it) and is safe to commit — ids are not secrets. **Ekspor Bundle** in the dashboard ships it in the zip too.
+- **The server checks that you exported.** An update that carries a `manifest` must send `baseRevision` (= `lock.revision`). Missing → refused. Stale → refused, because the seller edited the draft in the Site Editor (or uploaded from elsewhere) after your export, and your folder would overwrite that work. Export again and re-apply your change on top. There is no override flag; a successful write hands back the new revision.
+- **Theme: send it whole, or not at all.** A theme you DO send is a total replacement — a key you drop from it goes back to the platform default, and the dry run now lists each one (`Tema radius: 12 → 8`). On an update, omitting the `theme` block ENTIRELY leaves the draft's theme untouched; it used to reset it to the defaults. `manifest.md` § Theme says so.
+- **What the tools cannot do, on purpose:** create a listing, set a price, publish. Those stay with the seller in the dashboard — say so rather than looking for a way around it.
+- Reusing a variant in another template still means copying the file: a bundle stays self-contained, a raw `u:<variantId>` is rejected. A byte-identical source under the same `name` and `sectionType` is recognised and the existing variant is reused, review status included.
+
 ## 0.1.28 — 2026-09-21
 
 - **`template.json` now carries a `listing` block**, and step 7 says to write it: `name`, `title`, `description`, `category`, `tags`. The conversion has just read the whole source site to build the manifest, so this is the one moment the catalog copy is free — without it the seller types it at publish time, or spends an AI credit on the dashboard to regenerate what the converter already knew. Everything in the block is a proposal: it prefills the publish form, the seller still edits it and sets the price.
