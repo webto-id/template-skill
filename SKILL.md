@@ -77,6 +77,7 @@ Some things are correctly out of reach for a marketplace variant — not a gap t
 - **Components that need an npm package** — any interactivity that would require importing a library (rich carousels with physics, chart libraries, animation engines beyond CSS) has to be rebuilt from the WVF script subset or a CSS-only equivalent, which is not always visually identical.
 - **Content that's random or different on every page load** — the renderer has no client-side data fetching; content is exactly what's in the section's saved fields.
 - **Floating/fixed chrome** (a docked nav, a fixed-position theme toggle) — `position: fixed` is a universal compile error (WVF chrome, tightened 2026-09-04), including for navbar/banner.
+- **The floating WhatsApp bubble, pixels, AI chat** — site settings, not template content; the buyer switches the bubble on with their own number in **Integrasi → Nomor WhatsApp** (`references/manifest.md` § WhatsApp bubble). A WhatsApp call-to-action IN the design is converted as section content (`wa.me` link) and does carry over.
 - **Licensed/branded fonts and images the seller doesn't own** — replaced with the nearest matched Google Font and Unsplash/Pexels/platform-illustration images; never redistribute someone else's asset files or a paid font's files. (The seller's OWN photography/art is fine via `asset:<filename>` — see step 6.)
 
 ## Hard limits

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.30 — 2026-09-22
+
+- **The WhatsApp bubble is explained, because it was not.** A template cannot ship the floating WhatsApp button: it is site configuration (`integrations.whatsapp`), reset to empty when a buyer clicks "Gunakan template", and hidden on catalog previews. `businessProfile.phone` in `template.json` switches it on for the SELLER's draft on first upload only — the number in the file is never the buyer's. New section in `manifest.md`, and the "what will not be copied" list names it: the buyer enters their own number under **Integrasi → Nomor WhatsApp**. A WhatsApp call-to-action that is part of the DESIGN is section content (`wa.me` link) and does carry over.
+- `businessProfile` documented for the first time (legal name, phone, email, address, opening hours, social links) — it feeds the draft's JSON-LD, and is not copied to buyers either.
+
 ## 0.1.29 — 2026-09-22
 
 - **The agent can upload now, not just hand over a folder.** webto.id has a seller MCP server (`https://api.webto.id/mcp`, personal access token from Settings → Security). New workflow step 12 and `references/mcp.md`: validate locally first (the server's dry run is rate limited, `variant-check` is not), upload bundle images yourself with `curl` via `begin_asset_upload` — never as base64 in a tool call — then `create_template_draft` / `update_template_draft`. It is optional: without the server connected, deliver the folder exactly as before. Never ask the seller to paste a token into the chat.

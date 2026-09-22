@@ -8,6 +8,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   "language": "id",                       // default "id"
   "siteType": "website",                 // "website" | "landing" | "personal"
   "aiDescription": "Kedai kopi ...",     // optional; seeds AI context for buyers
+  "businessProfile": { ... },             // optional; NOT how a buyer gets the WhatsApp bubble (below)
   "theme": { ... },                       // PARTIAL theme — only what differs (below)
   "siteSections": [                       // chrome: platform variant id or "u:@<key>"
     { "type": "navbar", "position": "header", "variant": "centered",
@@ -170,6 +171,50 @@ Four legal forms, everywhere (manifest `content` and `.sample.json` alike):
 Nothing else is accepted in an image field: a relative path (`assets/logo.png`, `./foto.jpg`) fails the dry run with *"Must be a URL or image path"*. `variant-check` 0.1.30 reports the same thing locally as `content-image-url`. (Until 2026-09-18 the dry run also rejected `__ILLU__:` in those fields, although the import resolves it — that was a platform bug, now fixed; it needs an `apps/server` deploy.)
 
 Anything from the source under a license that doesn't transfer to the platform (stock photography, someone else's icon set, a purchased asset pack) is still **never** carried over.
+
+## WhatsApp bubble and `businessProfile`
+
+The floating WhatsApp button is SITE configuration (`integrations.whatsapp`),
+not part of this format — there is no key in `template.json` that switches it
+on for a buyer, and a converted design that "has a WhatsApp bubble" cannot ship
+one. What the manifest can carry is the business's own facts:
+
+```jsonc
+"businessProfile": {                    // optional; every key optional
+  "legalName": "Kopi Senja",
+  "phone": "+6281234567890",            // E.164; see below for what it triggers
+  "email": "halo@kopisenja.id",
+  "address": { "street": "Jl. Braga 12", "city": "Bandung", "region": "Jawa Barat", "postalCode": "40111", "country": "ID" },
+  "openingHours": [ { "days": ["Mo", "Tu", "We", "Th", "Fr"], "open": "08:00", "close": "21:00" } ],
+  "socialLinks": ["https://instagram.com/kopisenja"]
+}
+```
+
+What actually happens:
+
+- **`phone` switches the bubble on for the DRAFT, on first upload only.** When
+  a site is created from the manifest and `businessProfile.phone` is set, the
+  platform writes `integrations.whatsapp = { numbers: [phone], floatingButton: true }`
+  (the same thing the wizard does). An update never touches integrations.
+- **The buyer never inherits it.** "Gunakan template" clones pages, sections
+  and theme; `integrations` is reset to empty and `businessProfile` is not
+  copied, because the phone in the file is the SELLER's (or the source demo's),
+  never the buyer's. The buyer enters their own number in the dashboard
+  (**Integrasi → Nomor WhatsApp**, floating-button switch), which is one field.
+- **The catalog preview never shows it either.** Snapshot pages render in
+  storefront mode: no WhatsApp button, no pixels, no AI chat.
+
+So for a template: leave `businessProfile` out unless the seller wants the
+bubble on their own draft for review, and never put a real number in a bundle
+you hand to someone else. If the SOURCE design has a WhatsApp call-to-action
+(a "Chat kami" button in the hero or a contact card), convert that as section
+CONTENT — a `cta` link to `https://wa.me/<number>`, or the platform `contact`
+section's `whatsappUrl` field — and tell the buyer, in the "what will not be copied"
+list, that the floating bubble is a one-switch setting on their side.
+
+`businessProfile` also feeds the site's JSON-LD (`LocalBusiness`: address,
+opening hours, `sameAs`) — useful on a seller's OWN site, meaningless as
+template merchandise for the same reason.
 
 ## `listing`: the catalog copy, written once, here
 
