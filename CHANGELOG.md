@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.31 — 2026-09-24
+
+- **The site half of `template.json` is checked locally now** (`variant-check` ≥ 0.1.35, rule `manifest-site`). `siteName`, `language`, `siteType`, `theme` (`layout`, `spacing`, the font list …), `siteSections` and `pages` are validated against the upload's own schema, and every wrong value comes back in ONE run instead of one per dry-run. Until now only `variants[]` and `listing` were checked, so a bundle with `"siteType": "company"` or `"theme": { "layout": "standard" }` passed the CLI and failed at the server, one error at a time. Closed enums accept only the listed values — a plausible synonym is an error.
+
 ## 0.1.30 — 2026-09-22
 
 - **The WhatsApp bubble is explained, because it was not.** A template cannot ship the floating WhatsApp button: it is site configuration (`integrations.whatsapp`), reset to empty when a buyer clicks "Gunakan template", and hidden on catalog previews. `businessProfile.phone` in `template.json` switches it on for the SELLER's draft on first upload only — the number in the file is never the buyer's. New section in `manifest.md`, and the "what will not be copied" list names it: the buyer enters their own number under **Integrasi → Nomor WhatsApp**. A WhatsApp call-to-action that is part of the DESIGN is section content (`wa.me` link) and does carry over.
