@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.32 — 2026-09-26
+
+- **Variants in a template are approved automatically or checked first.** On upload each variant is approved right away, or — when it has a script or a hardcoded off-platform link — goes through an automatic security check that approves it or hands it to an admin (the variant skill's `wvf.md` §4 "Review rule"). The old "sits in the admin review queue" description is gone; the seller publishes the listing once every variant is approved.
+
 ## 0.1.31 — 2026-09-24
 
 - **The site half of `template.json` is checked locally now** (`variant-check` ≥ 0.1.35, rule `manifest-site`). `siteName`, `language`, `siteType`, `theme` (`layout`, `spacing`, the font list …), `siteSections` and `pages` are validated against the upload's own schema, and every wrong value comes back in ONE run instead of one per dry-run. Until now only `variants[]` and `listing` were checked, so a bundle with `"siteType": "company"` or `"theme": { "layout": "standard" }` passed the CLI and failed at the server, one error at a time. Closed enums accept only the listed values — a plausible synonym is an error.
