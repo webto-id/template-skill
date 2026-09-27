@@ -41,6 +41,7 @@ The token never goes in the file itself — `.mcp.json` gets committed.
 | `create_template_draft` | Upload a bundle as a NEW draft |
 | `update_template_draft` | Update an existing draft from a bundle |
 | `begin_asset_upload` | Start an upload session for `asset:<filename>` images |
+| `get_preview_url` | Fresh signed preview links for one draft (`previewUrl`, `previewPages`, `expiresAt`) |
 
 There is deliberately no tool that creates a listing, sets a price or publishes.
 Those stay with the seller in the dashboard; say so instead of looking for a way.
@@ -69,6 +70,15 @@ Those stay with the seller in the dashboard; say so instead of looking for a way
 6. **Save the lock.** A real write returns `lock`; write it verbatim to
    `webto.lock.json` beside `template.json`. Writes are limited to 10 per
    10 minutes; you should need one.
+7. **Look at the draft before you report.** The write returns `previewUrl`
+   (home page) and `previewPages` (`[{ title, slug, url }]`, one signed link
+   per page, valid 12 hours). Open every page in a browser at 390, 768 and
+   1280 px — the draft as the platform renders it, with its real theme, not
+   the CLI preview — and compare against the source. Fix, update, look again.
+   Without a browser, tell the seller this check was not done. The links
+   expire after 12 hours; `get_preview_url` with the draft id gives fresh
+   ones. A dry run of `update_template_draft` carries `savedPreview`: the draft
+   as it is saved NOW, without your change.
 
 ## Updating: export before you touch anything
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.33 — 2026-09-28
+
+- **Preview links from MCP.** `create_template_draft`, `update_template_draft` and `export_template_bundle` return `previewUrl`, `previewPages` (one signed link per page) and `previewExpiresAt`; the agent opens every page at 390, 768 and 1280 px after an upload. A dry run against an existing draft returns `savedPreview` (the draft as it is now). Links last 12 hours; `get_preview_url` gives fresh ones.
+
 ## 0.1.32 — 2026-09-26
 
 - **Variants in a template are approved automatically or checked first.** On upload each variant is approved right away, or — when it has a script or a hardcoded off-platform link — goes through an automatic security check that approves it or hands it to an admin (the variant skill's `wvf.md` §4 "Review rule"). The old "sits in the admin review queue" description is gone; the seller publishes the listing once every variant is approved.
