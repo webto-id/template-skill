@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.34 — 2026-09-28
+
+- **Sub-pages in `template.json`.** A page can carry `"parent": "<slug>"` to sit under another page of the manifest — one level, never under the home page, no cycles; `variant-check` ≥ 0.1.39 checks it locally. Exports write it back. An upload without `parent` keeps the parent the seller set in the editor; `"parent": null` detaches it. The navbar must render the hierarchy (variant skill `wvf.md` §4b).
+
 ## 0.1.33 — 2026-09-28
 
 - **Preview links from MCP.** `create_template_draft`, `update_template_draft` and `export_template_bundle` return `previewUrl`, `previewPages` (one signed link per page) and `previewExpiresAt`; the agent opens every page at 390, 768 and 1280 px after an upload. A dry run against an existing draft returns `savedPreview` (the draft as it is now). Links last 12 hours; `get_preview_url` gives fresh ones.

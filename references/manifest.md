@@ -15,7 +15,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
       "content": { "siteName": "Kopi Senja" } },
     { "type": "footer", "position": "footer", "variant": "simple", "content": {} }
   ],
-  "pages": [
+  "pages": [                              // max 8; a sub-page adds "parent": "<parent slug>" (Rules)
     { "title": "Beranda", "slug": "",     // slug "" = homepage (required once)
       "sections": [
         { "type": "hero", "variant": "u:@hero-split",   // ← bundle variant, by key
@@ -44,6 +44,12 @@ One JSON object. Two halves: a **site definition** (what the admin import format
 - **Energy is a different axis from composition.** `bold`/`brutal`/`playful` are the loud end, `calm` the quiet one; `airy` means empty space and `minimal` means few elements — neither implies a slow pace, and a spacious section with a 96px accent headline is `bold` AND `airy`. Without `calm`, quiet sections pile up under `minimal`/`airy` until the mood stops separating variants inside one bundle. And mood describes the LOOK, never the subject: "personal" or "for a clinic" belong in `description`/`fits`.
 - **`description` and `mood` are REQUIRED** (`description` 15–300 chars) — they are what the AI wizard's variant catalog reads to decide whether this variant fits a buyer's site, not editor-facing copy. Write `description` as a factual layout clause, no superlatives ("Two-column hero with a large photo on the right", not "A stunning modern hero"). Write `fits` as the content shape this variant actually needs ("short headline + one strong photo", not a restatement of the description). **Both in English prose**, same convention as `name` and every built-in variant's own catalog text — see "Language" below. A bundle missing either on a variant fails upload with a clear per-key message.
 - **Max 8 `pages`**, exactly one with `slug: ""` (the homepage). Other slugs are slugified on insert. Several pages may reference the same `u:@<key>` — one .astro, reused with different `content` per page.
+- **Sub-pages: `"parent": "<slug>"`** on a page puts it under another page of the same manifest — the navbar shows it in that page's dropdown (desktop) and accordion (mobile). Use it when the source nests pages in its menu, or the content has a natural parent: Layanan → one page per service; Tentang → Tim, Sejarah. Rules, checked by `variant-check` (0.1.39+) and the upload alike: the parent must be another page in `pages[]` (its slug as written or slugified), never the homepage; ONE level only (a sub-page cannot have sub-pages — which also rules out cycles); the homepage cannot be a sub-page. The parent is a real page with its own content (an overview linking its children), not an empty menu heading. A parent hidden from the navbar (`showInNavbar: false`) hides its sub-pages from it too.
+  ```jsonc
+  { "title": "Layanan", "slug": "layanan", "sections": [ … ] },
+  { "title": "Konsultasi Pajak", "slug": "konsultasi-pajak", "parent": "layanan", "sections": [ … ] }
+  ```
+  On an UPDATE (`template.json` re-uploaded, or `update_template_bundle`), a page that leaves `parent` out KEEPS the parent it has in the draft — a manifest written before this field existed does not flatten what the seller nested in the Site Editor; `"parent": null` makes a page top-level again. The export writes `parent` for every sub-page, and the dry-run diff lists each parent change.
 - Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
 
