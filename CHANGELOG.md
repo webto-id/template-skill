@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.35 — 2026-09-28
+
+- **The snapshot a listing sells is tracked.** After `update_template_draft` on a draft that has a listing, the result carries `listing.snapshot` (`fresh` / `stale` / `unknown`); `list_template_drafts` shows it too. A stale snapshot means new buyers still get the old version. Tell the seller and ASK before refreshing — never refresh on your own.
+- **New tool `refresh_listing_snapshot`** (dry run first, then `confirm: true` after the seller agrees). Needs the token scope `listings:write`, which `templates:write` does not include. Earlier buyers keep their own copies.
+- **Public listing URLs.** Listing blocks carry `catalogUrl` (the catalog page) and `livePreviewUrl` (`tpl-<slug>.wpage.id`, the version that is SOLD); new read tool `get_listing_urls`. Both are null until the listing is active and its snapshot published. Hand them to the seller after a listing goes live or a refresh. Unlike a draft's signed `previewUrl` (12 h), they need no token.
+
 ## 0.1.34 — 2026-09-28
 
 - **Sub-pages in `template.json`.** A page can carry `"parent": "<slug>"` to sit under another page of the manifest — one level, never under the home page, no cycles; `variant-check` ≥ 0.1.39 checks it locally. Exports write it back. An upload without `parent` keeps the parent the seller set in the editor; `"parent": null` detaches it. The navbar must render the hierarchy (variant skill `wvf.md` §4b).

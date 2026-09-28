@@ -34,7 +34,7 @@ The token never goes in the file itself — `.mcp.json` gets committed.
 
 | Tool | Does |
 |---|---|
-| `list_template_drafts` | The seller's drafts: `id`, subdomain, listing state |
+| `list_template_drafts` | The seller's drafts: `id`, subdomain, listing state, `listing.snapshot` (`fresh` / `stale` / `unknown`) and the listing's public `catalogUrl` / `livePreviewUrl` |
 | `list_my_variants` | Variants the seller owns: `id`, `bundleKey`, status, `originSiteId` |
 | `check_template_source` | Readiness report for one draft |
 | `export_template_bundle` | The draft as a bundle folder again, plus `lock` |
@@ -42,6 +42,8 @@ The token never goes in the file itself — `.mcp.json` gets committed.
 | `update_template_draft` | Update an existing draft from a bundle |
 | `begin_asset_upload` | Start an upload session for `asset:<filename>` images |
 | `get_preview_url` | Fresh signed preview links for one draft (`previewUrl`, `previewPages`, `expiresAt`) |
+| `refresh_listing_snapshot` | Put the draft's current version on sale in its existing listing (scope `listings:write`; see below) |
+| `get_listing_urls` | A listing's two public addresses (`catalogUrl`, `livePreviewUrl`), its status and snapshot freshness |
 
 There is deliberately no tool that creates a listing, sets a price or publishes.
 Those stay with the seller in the dashboard; say so instead of looking for a way.
@@ -102,8 +104,10 @@ So, to revise an existing draft:
 
 ### `baseRevision`: the server checks that you exported
 
-`lock.revision` is a fingerprint of the draft (theme, pages, sections, chrome)
-at the moment of the export. An update that carries a `manifest` MUST send it
+`lock.revision` is a fingerprint of the draft (theme, language, pages, sections
+with their styles and visibility, chrome) at the moment of the export. A lock
+from before 2026-09-28 says `r1-…` and is refused once with its own message:
+export again. An update that carries a `manifest` MUST send it
 back as `baseRevision`:
 
 - **Missing** → refused. You skipped the export; do it.
@@ -125,6 +129,76 @@ omit the `theme` block entirely — the draft's theme is then left exactly as it
 is, and the report says so. An export always contains the full theme, so
 working on top of an export is safe either way.
 
+## After an update: the listing still sells the OLD version
+
+A listed template is sold as a **snapshot** — a locked copy taken when the
+listing was published or last refreshed. Updating the draft does NOT change
+what buyers get, and nothing refreshes the snapshot on its own (a half-finished
+save would go on sale, and a refresh is refused while a variant awaits review).
+
+So when a confirmed `update_template_draft` returns a `listing` block:
+
+```json
+"listing": { "id": "…", "status": "active", "snapshot": "stale", "sourceUpdatedAt": "…",
+             "catalogUrl": "https://webto.id/templates/tpl-…", "livePreviewUrl": "https://tpl-….wpage.id", "next": "…" }
+```
+
+- `snapshot: "stale"` — the draft changed since the snapshot. **Tell the seller
+  and ASK** whether this version should go on sale now. Do not decide for them:
+  they may want to finish more changes, or wait for a variant's review.
+- `snapshot: "unknown"` — the snapshot predates version tracking (or its
+  source is gone). Say so; one refresh starts tracking.
+- `snapshot: "fresh"` — nothing to do.
+- No `listing` key — the draft has no listing; nothing to do.
+
+Tell them too that **buyers who already bought are unaffected** either way —
+their sites are separate copies.
+
+Only after an explicit yes:
+
+1. `refresh_listing_snapshot` with `listingId`, WITHOUT `confirm` — the dry run.
+   It returns `changes.lines` (what the refresh would change: pages added or
+   removed, which pages' sections differ, theme, navbar/footer) and `blockers`.
+   If `blockers` is not empty (usually a variant still in review), relay them
+   and stop: the refresh would be refused.
+   When it helps the seller decide, put the draft's `previewUrl` (the version
+   being worked on) next to `livePreviewUrl` (the version on sale now) and let
+   them compare.
+2. Same call with `confirm: true`. The result says `snapshot: "fresh"` and
+   carries `catalogUrl` + `livePreviewUrl`: open `livePreviewUrl` to check it,
+   then give the seller both.
+
+**Never** call it with `confirm: true` without the seller's explicit approval of
+selling this version — not even when the dry run is clean, and not in bulk
+because "they asked you to update the templates". Updating a draft and putting
+it on sale are two different decisions.
+
+It needs the **`listings:write`** scope, which `templates:write` does NOT
+include: a token made only for drafts cannot touch what buyers get. Without it
+the tool is not in `tools/list`; tell the seller they can refresh from the
+dashboard (Marketplace → Listing → **Perbarui snapshot**, or **Perbarui semua
+yang tertinggal**), or create a token with **Listing marketplace → Perbarui
+snapshot** ticked.
+
+## The listing's public URLs
+
+A listing has two public addresses, both without a token and without expiry:
+
+- `catalogUrl` — its page in the template catalog (`webto.id/templates/<slug>`).
+- `livePreviewUrl` — the template **as sold**: the listing's snapshot
+  (`tpl-<slug>.wpage.id`). Not the same as a draft's `previewUrl`, which is
+  signed, expires after 12 hours and shows the version being worked on.
+
+They ride on every `listing` block (`list_template_drafts`, a confirmed
+`update_template_draft`) and on `refresh_listing_snapshot`; `get_listing_urls`
+with a `listingId` returns them on their own (scope `templates:read`). Both are
+`null` while the listing is not active — `urlsNote` says why; only the seller
+can activate a listing, in the dashboard.
+
+Give the seller both **once their listing is active** and **after every
+snapshot refresh**. If `snapshot` is `stale`, say that `livePreviewUrl` still
+shows the older version on sale.
+
 ## `webto.lock.json`
 
 ```json
@@ -133,7 +207,7 @@ working on top of an export is safe either way.
   "siteId": "…",
   "subdomain": "tpl-studio-kalastra",
   "exportedAt": "2026-09-21T10:00:00.000Z",
-  "revision": "r1-3f9a1c0b7d2e4a68",
+  "revision": "r2-3f9a1c0b7d2e4a68",
   "variants": { "hero-studio-split": { "variantId": "…", "version": 3, "status": "approved" } }
 }
 ```
@@ -153,7 +227,8 @@ duplicate being minted. Change one byte and it is a new variant.
 ## When a call fails
 
 - `401` — token missing, expired or revoked. Ask the seller for a new one.
-- `403` — the token is read-only, or the account is suspended.
+- `403` — the token lacks the scope (read-only, or no `listings:write` for a
+  snapshot refresh), or the account is suspended.
 - `429` / `TOO_MANY_REQUESTS` — wait for the stated seconds. Do not loop.
 - `isError: true` with a `code` — the platform refused for a stated reason
   (ownership, draft limit, size). Relay the message; do not retry unchanged.
