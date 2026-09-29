@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.37 — 2026-09-29
+
+- **A listing name already in use is confirmed with the seller.** A template's preview address `tpl-<template name>.wpage.id` is permanent once the listing exists. When the name is taken, the dry run of `create_template_draft` / `update_template_draft` returns `nameTaken` (the name and the address it would get, e.g. `tpl-rumah-ceria-2`, `permanent: true`) and `next` tells you to ASK the seller: keep the numbered address, or change the name first. Only after an explicit yes, confirm with `acceptNameSuffix: true`; without it the confirm is refused and nothing is written.
+
 ## 0.1.36 — 2026-09-29
 
 - **Every field printed as text must be editable inline**, including `siteName` in the navbar (`data-edit-field="siteName"`). `variant-check` ≥ 0.1.40 reports a missing marker as the error `text-not-editable` (see the variant skill's `wvf.md` §2.3); a bundle re-uploaded with unchanged `.astro` files is not rejected.

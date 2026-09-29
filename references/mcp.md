@@ -69,6 +69,8 @@ Those stay with the seller in the dashboard; say so instead of looking for a way
 4. **Fix and repeat** until `ok: true`.
 5. **Show the seller what will happen, then write.** Call again with
    `confirm: true`. For an update, first relay `manifestDiff` — see below.
+   If the dry run carries `nameTaken`, ask first — see
+   [A taken listing name](#a-taken-listing-name).
 6. **Save the lock.** A real write returns `lock`; write it verbatim to
    `webto.lock.json` beside `template.json`. Writes are limited to 10 per
    10 minutes; you should need one.
@@ -81,6 +83,29 @@ Those stay with the seller in the dashboard; say so instead of looking for a way
    expire after 12 hours; `get_preview_url` with the draft id gives fresh
    ones. A dry run of `update_template_draft` carries `savedPreview`: the draft
    as it is saved NOW, without your change.
+
+## A taken listing name
+
+The `listing.name` (else `listing.title`) you propose becomes the listing's
+preview address, `tpl-<name>.wpage.id`, when the seller later lists the
+template. That address is **permanent**: renaming the template afterwards does
+not move it. When another site already holds it, the dry run says so:
+
+```json
+"nameTaken": { "name": "Rumah Ceria", "previewSubdomain": "tpl-rumah-ceria-2", "permanent": true }
+```
+
+**Ask the seller** — do not choose for them:
+
+- **Keep the name** → call again with `confirm: true` **and**
+  `acceptNameSuffix: true`. The listing will live at the suffixed address.
+- **Rename** → change `listing.name` in `template.json` and dry-run again.
+
+A confirm without `acceptNameSuffix` is refused with the same message
+(`ok: false`, nothing written). No `nameTaken` → nothing to ask. An update
+whose proposal names what is already stored, or a draft that already has a
+listing (its address is fixed), is never flagged. The dashboard asks the seller
+again, with the address current at that moment, when they create the listing.
 
 ## Updating: export before you touch anything
 
