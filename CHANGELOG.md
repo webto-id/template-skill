@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.38 — 2026-09-29
+
+- **Group headings** (products by category, FAQ blocks) carry `data-edit-group` so the owner can rename a group inline; `variant-check` ≥ 0.1.41 reports a missing one as the error `text-edit-group-missing`. See the variant skill's `wvf.md` §2.3a. Never restructure a section to avoid the rule.
+
 ## 0.1.37 — 2026-09-29
 
 - **A listing name already in use is confirmed with the seller.** A template's preview address `tpl-<template name>.wpage.id` is permanent once the listing exists. When the name is taken, the dry run of `create_template_draft` / `update_template_draft` returns `nameTaken` (the name and the address it would get, e.g. `tpl-rumah-ceria-2`, `permanent: true`) and `next` tells you to ASK the seller: keep the numbered address, or change the name first. Only after an explicit yes, confirm with `acceptNameSuffix: true`; without it the confirm is refused and nothing is written.
