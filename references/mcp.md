@@ -140,7 +140,7 @@ So when a confirmed `update_template_draft` returns a `listing` block:
 
 ```json
 "listing": { "id": "…", "status": "active", "snapshot": "stale", "sourceUpdatedAt": "…",
-             "catalogUrl": "https://webto.id/templates/tpl-…", "livePreviewUrl": "https://tpl-….wpage.id", "next": "…" }
+             "catalogUrl": "https://webto.id/templates/…", "livePreviewUrl": "https://tpl-….wpage.id", "next": "…" }
 ```
 
 - `snapshot: "stale"` — the draft changed since the snapshot. **Tell the seller
@@ -184,9 +184,9 @@ snapshot** ticked.
 
 A listing has two public addresses, both without a token and without expiry:
 
-- `catalogUrl` — its page in the template catalog (`webto.id/templates/<slug>`).
+- `catalogUrl` — its page in the template catalog (`webto.id/templates/<listing title slug>`).
 - `livePreviewUrl` — the template **as sold**: the listing's snapshot
-  (`tpl-<slug>.wpage.id`). Not the same as a draft's `previewUrl`, which is
+  (`tpl-<template name>.wpage.id`). Not the same as a draft's `previewUrl`, which is
   signed, expires after 12 hours and shows the version being worked on.
 
 They ride on every `listing` block (`list_template_drafts`, a confirmed

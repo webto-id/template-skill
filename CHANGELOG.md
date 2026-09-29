@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.36 — 2026-09-29
+
+- **Every field printed as text must be editable inline**, including `siteName` in the navbar (`data-edit-field="siteName"`). `variant-check` ≥ 0.1.40 reports a missing marker as the error `text-not-editable` (see the variant skill's `wvf.md` §2.3); a bundle re-uploaded with unchanged `.astro` files is not rejected.
+- **Listing URLs:** `catalogUrl` is `webto.id/templates/<full title slug>` and `livePreviewUrl` is `tpl-<template name>.wpage.id` (short preview host). Older long preview hosts redirect.
+
 ## 0.1.35 — 2026-09-28
 
 - **The snapshot a listing sells is tracked.** After `update_template_draft` on a draft that has a listing, the result carries `listing.snapshot` (`fresh` / `stale` / `unknown`); `list_template_drafts` shows it too. A stale snapshot means new buyers still get the old version. Tell the seller and ASK before refreshing — never refresh on your own.
