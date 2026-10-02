@@ -15,7 +15,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
       "content": { "siteName": "Kopi Senja" } },
     { "type": "footer", "position": "footer", "variant": "simple", "content": {} }
   ],
-  "pages": [                              // max 8; a sub-page adds "parent": "<parent slug>" (Rules)
+  "pages": [                              // max 8 main pages; a sub-page adds "parent": "<parent slug>", a page version "alternativeOf": "<main slug>" (Rules)
     { "title": "Beranda", "slug": "",     // slug "" = homepage (required once)
       "sections": [
         { "type": "hero", "variant": "u:@hero-split",   // ← bundle variant, by key
@@ -50,6 +50,12 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   { "title": "Konsultasi Pajak", "slug": "konsultasi-pajak", "parent": "layanan", "sections": [ … ] }
   ```
   On an UPDATE (`template.json` re-uploaded, or `update_template_bundle`), a page that leaves `parent` out KEEPS the parent it has in the draft — a manifest written before this field existed does not flatten what the seller nested in the Site Editor; `"parent": null` makes a page top-level again. The export writes `parent` for every sub-page, and the dry-run diff lists each parent change.
+- **Page versions: `"alternativeOf": "<slug>"`** makes a page an alternative VERSION of another page of the same manifest — e.g. three homepage designs. In the template preview the buyer flips between versions with a "Versi" pill; when they create a site they pick ONE version per page, and the picked version takes the main page's slug, menu position and parent. Use it when the seller wants to offer real alternatives of the same page, not for different pages. Rules, checked by `variant-check` (0.1.43+) and the upload alike: the main page must be another page in `pages[]` (`""` = the homepage) and must not itself be a version; a version has its OWN slug (e.g. `"beranda-2"`, never `""`), no `parent`, and cannot be anyone's `parent`; at most 3 versions per page. Versions never show in the navbar/footer and do NOT count toward the 8-page cap (8 main pages + up to 3 versions each).
+  ```jsonc
+  { "title": "Beranda", "slug": "", "sections": [ … ] },
+  { "title": "Beranda — Versi Gelap", "slug": "beranda-2", "alternativeOf": "", "sections": [ … ] }
+  ```
+  On an UPDATE a page that leaves `alternativeOf` out KEEPS the link it has in the draft (the seller can also set it in the Site Editor's page menu ⋮ → "Jadikan versi dari…"); `"alternativeOf": null` makes it a main page again. The export writes `alternativeOf` for every version, and the dry-run diff lists each change.
 - Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
 

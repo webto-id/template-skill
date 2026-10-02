@@ -115,7 +115,8 @@ again, with the address current at that moment, when they create the listing.
 ## Updating: export before you touch anything
 
 `update_template_draft` with a `manifest` REPLACES the draft's pages, sections
-and theme. The seller may have edited the draft in the Site Editor since the
+and theme (page versions included: `alternativeOf` follows the same "absent =
+keep, null = clear" rule as `parent`; see `manifest.md`). The seller may have edited the draft in the Site Editor since the
 folder on disk was written — a font, a heading, a whole new section — and an
 upload from a stale `template.json` silently destroys that work.
 

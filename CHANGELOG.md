@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.40 — 2026-10-02
+
+- **Page versions.** A page with `"alternativeOf": "<main page slug>"` is an alternative version of that page (e.g. 3 homepage designs). Buyers flip between versions in the preview and pick one per page when they create a site; the pick takes the main page's slug. Own slug required, no `parent`, no sub-pages, max 3 per page, never in the menus, not counted toward the 8-page cap. `variant-check` ≥ 0.1.43 checks it locally; exports write it back; an update without it keeps the stored link, `null` clears it. See `manifest.md`.
+
 ## 0.1.39 — 2026-10-02
 
 - **Write tools return the complete lock.** The `lock` from every write (`create_template_draft`, `update_template_draft`, patch mode included) equals what `export_template_bundle` returns at that moment: every variant, `version` filled, the revision after the write. Save it verbatim, replacing `webto.lock.json`. `changed` lists the variants the write moved (`{ key: { from, to } }`; `from: null` = new). Patch mode leaves `revision` unchanged by design: variant code is not part of the fingerprint.
