@@ -72,7 +72,12 @@ Those stay with the seller in the dashboard; say so instead of looking for a way
    If the dry run carries `nameTaken`, ask first — see
    [A taken listing name](#a-taken-listing-name).
 6. **Save the lock.** A real write returns `lock`; write it verbatim to
-   `webto.lock.json` beside `template.json`. Writes are limited to 10 per
+   `webto.lock.json` beside `template.json`, replacing the old file. It is the
+   complete lock — every variant of the draft, `version` filled, the revision
+   after the write — exactly what `export_template_bundle` would return at that
+   moment, so it is safe to save as-is after any write, patch mode included.
+   What this write moved is in `changed`, beside the lock (see
+   [`webto.lock.json`](#webtolockjson)). Writes are limited to 10 per
    10 minutes; you should need one.
 7. **Look at the draft before you report.** The write returns `previewUrl`
    (home page) and `previewPages` (`[{ title, slug, url }]`, one signed link
@@ -141,7 +146,10 @@ back as `baseRevision`:
   re-apply YOUR change on top of the new files, dry-run again. Do not try to
   "merge" by resending your old folder — that is the overwrite this prevents.
 - A successful write returns a fresh `lock` with the NEW revision. Save it, or
-  your own next update is refused as stale.
+  your own next update is refused as stale. This applies to structural writes
+  (with a `manifest`): patch mode does not change `revision`, because section
+  code is not part of the fingerprint — an unchanged revision after a patch is
+  correct. Check `changed` for the new variant versions instead.
 
 This is a refusal, not a warning, for a token. There is no override flag.
 
@@ -239,7 +247,27 @@ shows the older version on sale.
 
 It answers "which draft is this folder?" (`siteId` → `targetSiteId`), "what
 did the draft look like when I last saw it?" (`revision` → `baseRevision`) and
-"has this key been uploaded before?". It is not part of an upload — the platform's
+"has this key been uploaded before, and at which version?".
+
+Every write tool returns the same complete lock an export does, so you never
+merge locks by hand. Beside it, a confirmed write returns `changed`: the
+variants this write moved, by key.
+
+```json
+"changed": { "hero-studio-split": { "from": 2, "to": 3 }, "faq-new": { "from": null, "to": 1 } }
+```
+
+- `from: null` — the key is new to this draft (on `create_template_draft`
+  every key is).
+- `to: null` — the key left the lock: no page or chrome uses it any more.
+- A key that is absent did not move. An empty `{}` means no variant changed.
+- `changed: null` — the platform could not read the lock before the write. The
+  lock itself is still complete; only the comparison is missing.
+
+A variant you patched but that is missing from `changed` was identical to the
+stored version (the dry run said "unchanged"). If `lock` is `null` after a
+successful write, `next` says so: call `export_template_bundle` and save its
+lock. It is not part of an upload — the platform's
 uploader steps over it — and it is safe to commit: ids are not secrets.
 
 **Reusing a variant in another template:** a bundle must stay self-contained,
