@@ -10,6 +10,8 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   "aiDescription": "Kedai kopi ...",     // optional; seeds AI context for buyers
   "businessProfile": { ... },             // optional; NOT how a buyer gets the WhatsApp bubble (below)
   "theme": { ... },                       // PARTIAL theme — only what differs (below)
+  "productLayout": "u:@product-split",    // optional; layout of every /product/<slug> page (Rules)
+  "productLayoutContent": { "badge": "Paling laris" },  // its fields, only with a u:@ layout
   "siteSections": [                       // chrome: platform variant id or "u:@<key>"
     { "type": "navbar", "position": "header", "variant": "centered",
       "content": { "siteName": "Kopi Senja" } },
@@ -56,6 +58,12 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   { "title": "Beranda — Versi Gelap", "slug": "beranda-2", "alternativeOf": "", "sections": [ … ] }
   ```
   On an UPDATE a page that leaves `alternativeOf` out KEEPS the link it has in the draft (the seller can also set it in the Site Editor's page menu ⋮ → "Jadikan versi dari…"); `"alternativeOf": null` makes it a main page again. The export writes `alternativeOf` for every version, and the dry-run diff lists each change.
+- **Product page layout: `"productLayout"`** sets how every `/product/<slug>` page of the buyer's site looks: a platform layout (`"classic"` (default), `"landing"`, `"minimal"`) or `"u:@<key>"` — a bundle variant with `"sectionType": "product-detail"` (variant skill `wvf.md` §4d: the platform's buy box, gallery, description and curriculum blocks placed inside your own markup). `"productLayoutContent"` holds that variant's own fields (badge, section titles), checked against its schema; it is an error with a platform layout. A template has no products, so the preview shows the layout on a sample product at `/product/contoh`. A buyer gets the layout with the site (and a license for the variant, like any bundled variant); a buyer applying the template to an EXISTING site gets it only when they tick "Tata letak produk". Use it when the source has a product/detail page whose design the template should carry; leave it out otherwise. On an UPDATE, leaving `productLayout` out KEEPS what the draft has; the export writes both keys and the dry-run diff names a change ("Tata letak produk: …").
+  ```jsonc
+  "productLayout": "u:@product-split",
+  "productLayoutContent": { "badge": "Paling laris", "storyTitle": "Tentang produk ini" },
+  "variants": [ { "key": "product-split", "sectionType": "product-detail", "name": "Product Split", "description": "Gallery left, buy box right, long description below.", "mood": ["minimal"] } ]
+  ```
 - Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
 

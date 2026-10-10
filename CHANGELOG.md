@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.41 — 2026-10-10
+
+- **Product page layout in the bundle.** `"productLayout"` sets how every `/product/<slug>` page of the buyer's site looks: `"classic"` (default), `"landing"`, `"minimal"`, or `"u:@<key>"` for a bundled `product-detail` variant, with its fields in `"productLayoutContent"`. It is copied to every buyer's site and exported back. Write the variant with the variant skill (`wvf.md` §4d, `variant-check` ≥ 0.1.46). See `manifest.md`.
+
 ## 0.1.40 — 2026-10-02
 
 - **Page versions.** A page with `"alternativeOf": "<main page slug>"` is an alternative version of that page (e.g. 3 homepage designs). Buyers flip between versions in the preview and pick one per page when they create a site; the pick takes the main page's slug. Own slug required, no `parent`, no sub-pages, max 3 per page, never in the menus, not counted toward the 8-page cap. `variant-check` ≥ 0.1.43 checks it locally; exports write it back; an update without it keeps the stored link, `null` clears it. See `manifest.md`.
