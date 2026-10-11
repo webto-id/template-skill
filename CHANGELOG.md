@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.43 — 2026-10-12
+
+- **Missing bundle images fail locally.** `variant-check site <folder>` (≥ 0.1.49) fails every `asset:<filename>` (sample-product photos, section content, a `.sample.json`) whose file is not in the folder, with the field path and the upload's own wording: `sampleProducts[0].images[1]: asset:serum.webp dirujuk tapi tidak ada di file yang diunggah — taruh serum.webp di assets/`. Matching is by bare filename and exact case, as on upload. Files the upload would refuse (name outside `[A-Za-z0-9._-]`, over 2 MB, more than 20, over 8 MB in total) fail too. See `manifest.md`.
+
 ## 0.1.42 — 2026-10-11
 
 - **Sample products in the bundle.** `"sampleProducts"` (max 8) in `template.json` are the template's own products: the preview's product sections and `/product/<slug>` pages show them instead of the generic sample, and every buyer's new site gets a copy of each as an INACTIVE draft, photos included. Kinds `physical`, `digital`, `webinar`, `event`, `donation` (no course); photos as `asset:<filename>` or `https://`; options + variants, attributes and kind settings supported; files, stock, meeting links and payment settings are refused. On an update the list REPLACES the draft's products (`[]` removes them, leaving the key out keeps them); the export writes them back with their photos in `assets`. Nobody can buy from a template or its preview. `variant-check` ≥ 0.1.48 checks it locally. See `manifest.md` and `mcp.md`.
