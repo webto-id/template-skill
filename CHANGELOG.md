@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.42 — 2026-10-11
+
+- **Sample products in the bundle.** `"sampleProducts"` (max 8) in `template.json` are the template's own products: the preview's product sections and `/product/<slug>` pages show them instead of the generic sample, and every buyer's new site gets a copy of each as an INACTIVE draft, photos included. Kinds `physical`, `digital`, `webinar`, `event`, `donation` (no course); photos as `asset:<filename>` or `https://`; options + variants, attributes and kind settings supported; files, stock, meeting links and payment settings are refused. On an update the list REPLACES the draft's products (`[]` removes them, leaving the key out keeps them); the export writes them back with their photos in `assets`. Nobody can buy from a template or its preview. `variant-check` ≥ 0.1.48 checks it locally. See `manifest.md` and `mcp.md`.
+
 ## 0.1.41 — 2026-10-10
 
 - **Product page layout in the bundle.** `"productLayout"` sets how every `/product/<slug>` page of the buyer's site looks: `"classic"` (default), `"landing"`, `"minimal"`, or `"u:@<key>"` for a bundled `product-detail` variant, with its fields in `"productLayoutContent"`. It is copied to every buyer's site and exported back. Write the variant with the variant skill (`wvf.md` §4d, `variant-check` ≥ 0.1.46). See `manifest.md`.

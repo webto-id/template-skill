@@ -124,7 +124,9 @@ So, to revise an existing draft:
 
 1. `export_template_bundle` → overwrite the local folder with what it returns
    (`manifest` → `template.json`, each `files[]` entry at its `path`, `lock` →
-   `webto.lock.json`). Check `notCarried` and tell the seller what it lists.
+   `webto.lock.json`, each `assets[]` entry downloaded from its `url` into
+   `assets/<filename>` -- the sample products' own photos, referenced as
+   `asset:<filename>`). Check `notCarried` and tell the seller what it lists.
 2. Make your changes on top of that.
 3. Dry run, sending `baseRevision` = `lock.revision`. `manifestDiff.lines` is
    what the upload would change in the draft; every line should be one you

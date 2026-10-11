@@ -12,6 +12,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   "theme": { ... },                       // PARTIAL theme — only what differs (below)
   "productLayout": "u:@product-split",    // optional; layout of every /product/<slug> page (Rules)
   "productLayoutContent": { "badge": "Paling laris" },  // its fields, only with a u:@ layout
+  "sampleProducts": [ ... ],              // optional; up to 8 sample products (Rules)
   "siteSections": [                       // chrome: platform variant id or "u:@<key>"
     { "type": "navbar", "position": "header", "variant": "centered",
       "content": { "siteName": "Kopi Senja" } },
@@ -58,11 +59,31 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   { "title": "Beranda — Versi Gelap", "slug": "beranda-2", "alternativeOf": "", "sections": [ … ] }
   ```
   On an UPDATE a page that leaves `alternativeOf` out KEEPS the link it has in the draft (the seller can also set it in the Site Editor's page menu ⋮ → "Jadikan versi dari…"); `"alternativeOf": null` makes it a main page again. The export writes `alternativeOf` for every version, and the dry-run diff lists each change.
-- **Product page layout: `"productLayout"`** sets how every `/product/<slug>` page of the buyer's site looks: a platform layout (`"classic"` (default), `"landing"`, `"minimal"`) or `"u:@<key>"` — a bundle variant with `"sectionType": "product-detail"` (variant skill `wvf.md` §4d: the platform's buy box, gallery, description and curriculum blocks placed inside your own markup). `"productLayoutContent"` holds that variant's own fields (badge, section titles), checked against its schema; it is an error with a platform layout. A template has no products, so the preview shows the layout on a sample product at `/product/contoh`. A buyer gets the layout with the site (and a license for the variant, like any bundled variant); a buyer applying the template to an EXISTING site gets it only when they tick "Tata letak produk". Use it when the source has a product/detail page whose design the template should carry; leave it out otherwise. On an UPDATE, leaving `productLayout` out KEEPS what the draft has; the export writes both keys and the dry-run diff names a change ("Tata letak produk: …").
+- **Product page layout: `"productLayout"`** sets how every `/product/<slug>` page of the buyer's site looks: a platform layout (`"classic"` (default), `"landing"`, `"minimal"`) or `"u:@<key>"` — a bundle variant with `"sectionType": "product-detail"` (variant skill `wvf.md` §4d: the platform's buy box, gallery, description and curriculum blocks placed inside your own markup). `"productLayoutContent"` holds that variant's own fields (badge, section titles), checked against its schema; it is an error with a platform layout. The preview shows the layout on the template's own `sampleProducts` (next rule); without them, on a generic platform sample product at `/product/contoh`. A buyer gets the layout with the site (and a license for the variant, like any bundled variant); a buyer applying the template to an EXISTING site gets it only when they tick "Tata letak produk". Use it when the source has a product/detail page whose design the template should carry; leave it out otherwise. On an UPDATE, leaving `productLayout` out KEEPS what the draft has; the export writes both keys and the dry-run diff names a change ("Tata letak produk: …").
   ```jsonc
   "productLayout": "u:@product-split",
   "productLayoutContent": { "badge": "Paling laris", "storyTitle": "Tentang produk ini" },
   "variants": [ { "key": "product-split", "sectionType": "product-detail", "name": "Product Split", "description": "Gallery left, buy box right, long description below.", "mood": ["minimal"] } ]
+  ```
+- **Sample products: `"sampleProducts"`** (max 8) are real products of the template: the preview's product sections and `/product/<slug>` pages show them instead of the platform's generic sample, and every buyer's new site gets a copy of each as an INACTIVE draft (photos included), ready to edit and switch on. Use them when the source sells something (a shop, a menu, a course launch) so the preview looks like that business; leave them out otherwise. Fields: `name`, `kind` (`"physical"`, `"digital"`, `"webinar"`, `"event"`, `"donation"` — never `"course"`), `priceIdr` (whole rupiah), and optionally `slug` (derived from `name`), `category`, `description` (markdown), `images` (`asset:<filename>` for the seller's own photos, or `https://` URLs — `__IMG__:`/`__ILLU__:` are refused: a product photo must show the product), `weightGram` (REQUIRED for `physical`, on the product or on every variant), `options` + `variants` (combinations such as Ukuran 30ml/50ml: one variant per combination, each with `optionValues` and its own `priceIdr`), `attributes` (spec groups: `{ "name", "items": [{ "label", "value" }] }`), `kindConfig` (event/webinar `startAt`/`endAt` epoch ms, `timezone`, event `address`; donation `targetIdr`/`minIdr`/`presets`/`allowCustom`). Refused by name: a downloadable file, stock, a curriculum, a webinar meeting link, bump/upsell/bundle wiring, payment settings — a buyer adds those themselves. Nobody can buy from the template or its preview (checkout refuses it). Checked by `variant-check` (0.1.48+) and the upload alike. On an UPDATE `sampleProducts` REPLACES the draft's products (`[]` removes them; leaving the key out keeps them), the export writes them back (an uploaded photo as `asset:<filename>`, its file listed in the export's `assets` — put it in `assets/` before re-uploading), and the dry-run diff lists products added, removed and changed.
+  ```jsonc
+  "sampleProducts": [
+    { "name": "Serum Niacinamide 10%", "kind": "physical", "priceIdr": 129000, "category": "Serum",
+      "description": "Serum ringan untuk mencerahkan dan meratakan warna kulit.",
+      "images": ["asset:serum.webp"],
+      "options": [{ "name": "Ukuran", "values": ["30ml", "50ml"] }],
+      "variants": [
+        { "optionValues": { "Ukuran": "30ml" }, "priceIdr": 129000, "weightGram": 80 },
+        { "optionValues": { "Ukuran": "50ml" }, "priceIdr": 189000, "weightGram": 120 }
+      ],
+      "attributes": [{ "name": "Detail", "items": [
+        { "label": "Jenis kulit", "value": "Semua jenis kulit" },
+        { "label": "Kandungan utama", "value": "Niacinamide 10%, Zinc 1%" } ] }] },
+    { "name": "Sunscreen Gel SPF 50", "kind": "physical", "priceIdr": 89000, "weightGram": 70,
+      "images": ["asset:sunscreen.webp"] },
+    { "name": "Konsultasi Kulit Online", "kind": "webinar", "priceIdr": 50000,
+      "description": "Sesi 30 menit bersama konsultan kecantikan." }
+  ]
   ```
 - Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
