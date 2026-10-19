@@ -67,14 +67,14 @@ Go through this explicitly before calling a conversion done — "looks right" sk
 - **Shadows** — present where the source has them, absent where it doesn't; matching depth, not just "some shadow."
 - **Hover and focus states** — a source with hover-lift cards or animated underlines that ships static is a visible downgrade a buyer will notice within a minute of using the editor.
 - **Dark mode** — every section previewed in both themes, not assumed to "just work" from token usage alone.
-- **Motion** — entrance animations, scroll-driven effects (see the variant skill's `wvf.md` §3.1), and hover transitions the source has, reproduced via `data-wv-effect` or CSS — see step 3 above on never silently dropping FUNCTIONAL interactivity to dodge script review; decorative motion has no such excuse either.
+- **Motion** — entrance animations, scroll-driven effects (see the variant skill's `wvf.md` §3.1), and hover transitions the source has, reproduced via `data-wv-effect` or CSS, or — for timelines, ScrollTrigger and pin/scrub — the platform's GSAP (`data-uses`, variant skill `wvf.md` §4a) — see step 3 above on never silently dropping FUNCTIONAL interactivity to dodge script review; decorative motion has no such excuse either.
 
 ## What will not be copied (tell the buyer)
 
 Some things are correctly out of reach for a marketplace variant — not a gap to apologize for, a boundary to state plainly. Hand this list to whoever's writing the listing description so buyer expectations match what's actually being sold:
 
 - **WebGL/canvas/3D** (`<canvas>` is a compile error, and rightly so — see the variant skill's §2.1 allowed-tags list).
-- **Components that need an npm package** — any interactivity that would require importing a library (rich carousels with physics, chart libraries, animation engines beyond CSS) has to be rebuilt from the WVF script subset or a CSS-only equivalent, which is not always visually identical.
+- **Components that need an npm package** — any interactivity that would require importing a library (rich carousels with physics, chart libraries) has to be rebuilt from the WVF script subset or a CSS-only equivalent, which is not always visually identical. **GSAP + ScrollTrigger are the exception:** the platform hosts them, so a source's GSAP timelines, scroll-triggered animations and pin/scrub carry over via `<script is:inline data-uses="gsap scroll-trigger">` (variant skill `wvf.md` §4a). Other animation engines and GSAP plugins (SplitText, Flip, Draggable…) still have to be rebuilt.
 - **Content that's random or different on every page load** — the renderer has no client-side data fetching; content is exactly what's in the section's saved fields.
 - **Floating/fixed chrome** (a docked nav, a fixed-position theme toggle) — `position: fixed` is a universal compile error (WVF chrome, tightened 2026-09-04), including for navbar/banner.
 - **The floating WhatsApp bubble, pixels, AI chat** — site settings, not template content; the buyer switches the bubble on with their own number in **Integrasi → Nomor WhatsApp** (`references/manifest.md` § WhatsApp bubble). A WhatsApp call-to-action IN the design is converted as section content (`wa.me` link) and does carry over.

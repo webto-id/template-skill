@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.44 — 2026-10-19
+
+- **GSAP carries over** (`SKILL.md` "What will not be copied"; variant skill `wvf.md` §4a, `variant-check` ≥ 0.1.51). The platform hosts GSAP 3.15 + ScrollTrigger, so a source's GSAP timelines, scroll-triggered animations and pin/scrub are converted with `<script is:inline data-uses="gsap scroll-trigger">` instead of being rebuilt or dropped. Other animation engines and GSAP plugins (SplitText, Flip, Draggable…) still have to be rebuilt. Simple reveals stay on `data-wv-effect`.
+
 ## 0.1.43 — 2026-10-12
 
 - **Missing bundle images fail locally.** `variant-check site <folder>` (≥ 0.1.49) fails every `asset:<filename>` (sample-product photos, section content, a `.sample.json`) whose file is not in the folder, with the field path and the upload's own wording: `sampleProducts[0].images[1]: asset:serum.webp dirujuk tapi tidak ada di file yang diunggah — taruh serum.webp di assets/`. Matching is by bare filename and exact case, as on upload. Files the upload would refuse (name outside `[A-Za-z0-9._-]`, over 2 MB, more than 20, over 8 MB in total) fail too. See `manifest.md`.
