@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.45 — 2026-10-20
+
+- **`sampleProducts[].orderVia: "whatsapp"`** (`references/manifest.md`; `variant-check` ≥ 0.1.54) for a **physical** product sold by chat: a rental, a negotiated or quoted service, B2B with a "mulai dari" price (write a rented venue or a quoted service as `physical` with `weightGram: 0`). The product page shows only the WhatsApp button, with no pay or cart button; checkout refuses it; the template preview shows a disabled WhatsApp button instead of a disabled "Bayar Sekarang". Other kinds are delivered by the platform after payment, so `"whatsapp"` on them is an error. The export writes the flag back, and a buyer's copy keeps it.
+
 ## 0.1.44 — 2026-10-19
 
 - **GSAP carries over** (`SKILL.md` "What will not be copied"; variant skill `wvf.md` §4a, `variant-check` ≥ 0.1.51). The platform hosts GSAP 3.15 + ScrollTrigger, so a source's GSAP timelines, scroll-triggered animations and pin/scrub are converted with `<script is:inline data-uses="gsap scroll-trigger">` instead of being rebuilt or dropped. Other animation engines and GSAP plugins (SplitText, Flip, Draggable…) still have to be rebuilt. Simple reveals stay on `data-wv-effect`.
