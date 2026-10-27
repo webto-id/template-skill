@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.47 — 2026-10-27
+
+- **`postBase`** (`references/manifest.md` § Article URL base; `variant-check` ≥ 0.1.58): an optional template key naming where the articles live (`/<postBase>/<slug>`: `blog` | `post` | `news` | `article` | `berita` | `artikel` | `jurnal`). Use it when the source keeps articles under `/berita/…` or `/artikel/…`; pair it with a page at that slug holding a `blog` section in `source: "database"`. Errors: an unknown base, a page using another base's slug, a `samplePosts` slug equal to a page slug. Warnings: no page at the base, or one that lists no posts. The export writes it back (only when not `blog`) and the dry run reports a change; a website bundle refuses it.
+- Fixed the `samplePosts` example in `references/manifest.md`: its markdown `body` had real line breaks inside the JSON string (invalid JSON); now `\n` escapes.
+
 ## 0.1.46 — 2026-10-27
 
 - **`samplePosts`** (`references/manifest.md` § Sample posts; `variant-check` ≥ 0.1.57): up to 8 ORIGINAL sample articles in `template.json` for a news or blog template — `title`, `body` (markdown) and optionally `slug`, `excerpt`, `category`, `tags`, `image` (`asset:<file>` or https; no `__IMG__`/`__ILLU__`), `imageCredit`, `publishedOffsetDays` (age when a site gets it). No author, date or status. The preview shows them and every buyer's new site starts with them as published sample articles (noindex, out of sitemap/RSS until edited) under the buyer's own byline. Write original text, never copy the source's articles, never invent quotes or figures from real people. An update replaces the draft's articles (`[]` removes, key absent keeps); the export writes them back; `variant-check site` also fails an `asset:` article image missing from the folder. Website bundles refuse the key.

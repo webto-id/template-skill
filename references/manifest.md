@@ -100,16 +100,18 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   "samplePosts": [
     { "title": "Tiga Kebiasaan Sebelum Mulai Bekerja", "category": "Gaya Hidup", "tags": ["rutinitas", "fokus"],
       "excerpt": "Rutinitas pagi yang ringan untuk menjaga fokus.",
-      "body": "## Mulai pelan
-
-Segelas air dan sepuluh menit tanpa layar...
-
-## Tulis satu prioritas
-
-Cukup satu, dan selesaikan lebih dulu.",
+      "body": "## Mulai pelan\n\nSegelas air dan sepuluh menit tanpa layar...\n\n## Tulis satu prioritas\n\nCukup satu, dan selesaikan lebih dulu.",
       "image": "asset:pagi.webp", "publishedOffsetDays": 1 },
     { "title": "Cara Memilih Meja Kerja yang Pas", "category": "Gaya Hidup", "body": "...", "publishedOffsetDays": 4 }
   ]
+  ```
+- **Article URL base: `"postBase"`** (optional, TEMPLATE only; `variant-check` 0.1.58+) — where the template's articles live: `/<postBase>/<slug>`, one of `blog` (the default) | `post` | `news` | `article` | `berita` | `artikel` | `jurnal`. Set it when the source keeps its articles under `/berita/…`, `/artikel/…` and so on; without it the preview and every buyer's site serve them at `/blog/<slug>` even though the index page sits at `/berita`. It becomes the draft's blog setting and travels to every buyer with the pages, and `/blog/<slug>` 301-redirects to the real address. Rules: (1) give the template a page whose slug IS the base (`"slug": "berita"`) holding a `blog` section with `"source": "database"`; it lists the articles (a missing or non-listing page is a warning, not an error); (2) no page may use the slug of ANOTHER base (`blog`, `news`, … when the base is `berita`) — error; (3) a `samplePosts` slug may not equal a page's slug — error. Leaving the key out keeps the stored base on an update (a new draft starts at `blog`); the export writes it back only when it is not `blog`, and the dry-run diff lists a change as `Alamat artikel: /blog/… → /berita/…`. A website bundle (`webto-website`) refuses `postBase`: its owner sets the address in the dashboard.
+  ```jsonc
+  "postBase": "berita",
+  "pages": [
+    { "title": "Berita", "slug": "berita", "sections": [ { "type": "blog", "content": { "source": "database", "heading": "Berita Terbaru" } } ] }
+  ],
+  "samplePosts": [ { "title": "Kabar Terbaru", "body": "..." } ]   // served at /berita/kabar-terbaru
   ```
 - Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.
 - Section `content` is validated against the section's real schema (base + the COMPILED extension for `u:@` refs), with every problem reported at once, addressed by path. `content: {}` is legal but hollow — fill real showcase copy.
