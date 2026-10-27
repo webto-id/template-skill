@@ -13,6 +13,7 @@ One JSON object. Two halves: a **site definition** (what the admin import format
   "productLayout": "u:@product-split",    // optional; layout of every /product/<slug> page (Rules)
   "productLayoutContent": { "badge": "Paling laris" },  // its fields, only with a u:@ layout
   "sampleProducts": [ ... ],              // optional; up to 8 sample products (Rules)
+  "samplePosts": [ ... ],                 // optional; up to 8 original sample articles, news/blog templates (Rules)
   "siteSections": [                       // chrome: platform variant id or "u:@<key>"
     { "type": "navbar", "position": "header", "variant": "centered",
       "content": { "siteName": "Kopi Senja" } },
@@ -92,6 +93,22 @@ One JSON object. Two halves: a **site definition** (what the admin import format
       "orderVia": "whatsapp", "category": "Sewa Harian",
       "description": "Harga mulai dari, per hari termasuk sopir. Tanyakan jadwal & rute lewat WhatsApp.",
       "images": ["asset:truk-engkel.webp"] }
+  ]
+  ```
+- **Sample posts: `"samplePosts"`** (max 8) are the template's sample ARTICLES. Use them when the source has a news or blog side — an article index, article cards, a magazine front page — so the preview shows a populated portal and every buyer's new site starts with articles instead of empty lists. Leave them out for a source with no articles. The preview shows them, and each buyer's new site gets a copy of each as a **published sample article**: noindex, left out of the sitemap, news sitemap and RSS, and marked as a sample until the buyer edits it (the first edit makes it theirs). Fields: `title`, `body` (markdown, required) and optionally `slug` (derived from `title`), `excerpt` (derived from the body when left out), `category`, `tags` (max 8), `image` (the featured photo: `asset:<filename>` for the seller's own photo, or an `https://` URL — `__IMG__:`/`__ILLU__:` are refused: a stock photo needs the photographer credit a sentinel cannot carry), `imageCredit` (`{ "photographerName", "photographerUrl", "provider", "providerUrl" }`, only when the photo's licence asks for a credit) and `publishedOffsetDays` (how many days old the article is when a site gets it, 0-3650, default 0 — give them different ages, e.g. 0, 1, 3, 6, so relative times and the news sitemap look natural whenever the template is used; equal ages stay in manifest order, first = newest). **No author, date or status:** the buyer's own default byline profile ("Redaksi <their site name>") is used, and every article is published. Max 8, and two articles may not share a slug. **Write original articles** — short, plausible, on the template's topic; never copy the source's own articles or anyone else's, and no quotes, statistics or statements attributed to real people or organisations (a template ships to many sites; a fake quote becomes a fake quote on all of them). Checked by `variant-check` (0.1.57+) and the upload alike; `variant-check site` also fails an `asset:<filename>` image whose file is not in the folder (`samplePosts[0].image: asset:pagi.webp dirujuk tapi tidak ada di file yang diunggah`). Only a **template** takes them: a website bundle (`webto-website`) refuses `samplePosts` — a website's articles are written by its owner. On an UPDATE `samplePosts` REPLACES the draft's published articles (`[]` removes them; leaving the key out keeps them), the export writes them back (an uploaded photo as `asset:<filename>`, its file listed in the export's `assets`), and the dry-run diff lists articles added, removed and changed; draft articles cannot be carried and are reported in `notCarried`. Errors read like `samplePosts[0].body: body (markdown) wajib diisi`, `samplePosts[0]: field tidak diizinkan di artikel contoh (authorId)` or `samplePosts[2].image: "__IMG__:pagi" bukan gambar yang sah …`.
+  ```jsonc
+  "samplePosts": [
+    { "title": "Tiga Kebiasaan Sebelum Mulai Bekerja", "category": "Gaya Hidup", "tags": ["rutinitas", "fokus"],
+      "excerpt": "Rutinitas pagi yang ringan untuk menjaga fokus.",
+      "body": "## Mulai pelan
+
+Segelas air dan sepuluh menit tanpa layar...
+
+## Tulis satu prioritas
+
+Cukup satu, dan selesaikan lebih dulu.",
+      "image": "asset:pagi.webp", "publishedOffsetDays": 1 },
+    { "title": "Cara Memilih Meja Kerja yang Pas", "category": "Gaya Hidup", "body": "...", "publishedOffsetDays": 4 }
   ]
   ```
 - Omit `subdomain` — the platform derives it. Listing metadata goes in the top-level `listing` block (below), not inside the site manifest.

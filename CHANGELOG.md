@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.46 — 2026-10-27
+
+- **`samplePosts`** (`references/manifest.md` § Sample posts; `variant-check` ≥ 0.1.57): up to 8 ORIGINAL sample articles in `template.json` for a news or blog template — `title`, `body` (markdown) and optionally `slug`, `excerpt`, `category`, `tags`, `image` (`asset:<file>` or https; no `__IMG__`/`__ILLU__`), `imageCredit`, `publishedOffsetDays` (age when a site gets it). No author, date or status. The preview shows them and every buyer's new site starts with them as published sample articles (noindex, out of sitemap/RSS until edited) under the buyer's own byline. Write original text, never copy the source's articles, never invent quotes or figures from real people. An update replaces the draft's articles (`[]` removes, key absent keeps); the export writes them back; `variant-check site` also fails an `asset:` article image missing from the folder. Website bundles refuse the key.
+- `variant-check` ≥ 0.1.57 also accepts `siteType: "news"`.
+
 ## 0.1.45 — 2026-10-20
 
 - **`sampleProducts[].orderVia: "whatsapp"`** (`references/manifest.md`; `variant-check` ≥ 0.1.54) for a **physical** product sold by chat: a rental, a negotiated or quoted service, B2B with a "mulai dari" price (write a rented venue or a quoted service as `physical` with `weightGram: 0`). The product page shows only the WhatsApp button, with no pay or cart button; checkout refuses it; the template preview shows a disabled WhatsApp button instead of a disabled "Bayar Sekarang". Other kinds are delivered by the platform after payment, so `"whatsapp"` on them is an error. The export writes the flag back, and a buyer's copy keeps it.
