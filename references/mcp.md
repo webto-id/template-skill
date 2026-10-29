@@ -12,7 +12,8 @@ Never ask the seller to paste a token into the chat.
 ## Setup (the seller does this once)
 
 1. Dashboard → Settings → Security → **Token akses (agen AI)** → create a token
-   ("Baca & tulis draft"). It is shown once.
+   ("Baca & tulis draft"; tick **Listing marketplace → Kelola listing & harga**
+   too if you should also create the listing). It is shown once.
 2. Put it in the environment as `WEBTO_TOKEN`, and add to the project's
    `.mcp.json`:
 
@@ -44,9 +45,14 @@ The token never goes in the file itself — `.mcp.json` gets committed.
 | `get_preview_url` | Fresh signed preview links for one draft (`previewUrl`, `previewPages`, `expiresAt`) |
 | `refresh_listing_snapshot` | Put the draft's current version on sale in its existing listing (scope `listings:write`; see below) |
 | `get_listing_urls` | A listing's two public addresses (`catalogUrl`, `livePreviewUrl`), its status and snapshot freshness |
+| `list_template_listings` | The seller's template listings: `id`, `sourceSiteId`, title, templateName, description, category, tags, `priceIdr`, packages, status, `snapshot` (scope `listings:read`) |
+| `get_listing_options` | The 13 categories, the price rules and `canSellPaid` / `paidBlocker` -- whether this seller can take money (scope `listings:read`) |
+| `create_template_listing` | Put a draft on the marketplace: title, templateName, description, tags, category, price, packages, publish (scope `listings:manage`; see below) |
+| `update_template_listing` | Change a listing's copy, category, price, packages or status (scope `listings:manage`) |
 
-There is deliberately no tool that creates a listing, sets a price or publishes.
-Those stay with the seller in the dashboard; say so instead of looking for a way.
+Screenshots of a listing, payment accounts and re-listing a template an admin
+took down stay with the seller in the dashboard; say so instead of looking for
+a way.
 
 ## The loop
 
@@ -228,12 +234,50 @@ A listing has two public addresses, both without a token and without expiry:
 They ride on every `listing` block (`list_template_drafts`, a confirmed
 `update_template_draft`) and on `refresh_listing_snapshot`; `get_listing_urls`
 with a `listingId` returns them on their own (scope `templates:read`). Both are
-`null` while the listing is not active — `urlsNote` says why; only the seller
-can activate a listing, in the dashboard.
+`null` while the listing is not active — `urlsNote` says why; it is activated
+in the dashboard, or with `update_template_listing` (`listings:manage`) after
+the seller's yes.
 
 Give the seller both **once their listing is active** and **after every
 snapshot refresh**. If `snapshot` is `stale`, say that `livePreviewUrl` still
 shows the older version on sale.
+
+## Creating and editing the listing
+
+A draft is not on sale until it has a listing. With the **`listings:manage`**
+scope you can write that listing; without it the tools are not in
+`tools/list`, and the seller lists the template in the dashboard (Marketplace →
+the draft → **Jual di Marketplace**).
+
+1. `get_listing_options` first. Pick the category from `categories` exactly
+   (no other value is accepted). Read `canSellPaid`: when it is `false`, a PAID
+   listing will be refused -- tell the seller what `paidBlocker` says (they set
+   up the payment account in the dashboard, Pengaturan → Pembayaran; you
+   cannot) and offer a free listing or a draft listing meanwhile.
+2. Draft the copy from the bundle's `listing` block (`references/manifest.md`
+   § listing): `templateName` = its `name`, `title`, `description`, `category`,
+   `tags`. **The price is the seller's**: ask for it (0 = free, otherwise at
+   least the minimum and a multiple of the step from `get_listing_options`;
+   the platform keeps `platformFeeRate` of it). Never pick one yourself.
+3. `create_template_listing` with `siteId` WITHOUT `confirm` -- the dry run.
+   It runs every check the real call does: the draft's readiness, the name,
+   the price and, for a paid listing, the payment account. `nameTaken` means
+   the preview address would be permanently suffixed: ask, as for the draft
+   upload.
+4. Show the seller the listing exactly as it will appear -- title, template
+   name, description, category, tags, price (and what they receive after
+   `platformFeeIdr`), and whether it goes on sale now (`publish: true`) or
+   stays a draft listing. Only after an explicit yes, the same call with
+   `confirm: true`. The result carries `catalogUrl` / `livePreviewUrl` once it
+   is active.
+
+Later changes go through `update_template_listing` with the listing `id`
+(`list_template_listings`): send only the fields that change, dry-run, show
+`changes`, confirm after a yes. `status` is `draft`, `active` or `disabled`;
+raising a free listing to a paid price meets the same payment-account check.
+A listing an admin took down (`unlisted`) keeps its status -- only an admin
+re-activates it. Changing the DRAFT that a listing sells is a different step:
+`refresh_listing_snapshot`.
 
 ## `webto.lock.json`
 
@@ -283,8 +327,11 @@ duplicate being minted. Change one byte and it is a new variant.
 ## When a call fails
 
 - `401` — token missing, expired or revoked. Ask the seller for a new one.
-- `403` — the token lacks the scope (read-only, or no `listings:write` for a
-  snapshot refresh), or the account is suspended.
+- `403` — the token lacks the scope (read-only, no `listings:write` for a
+  snapshot refresh, no `listings:manage` for a listing), or the account is
+  suspended.
+- `PRECONDITION_FAILED` on a listing with a price -- the seller has no active
+  payment account (or no website yet). Relay it; only the seller can fix it.
 - `429` / `TOO_MANY_REQUESTS` — wait for the stated seconds. Do not loop.
 - `isError: true` with a `code` — the platform refused for a stated reason
   (ownership, draft limit, size). Relay the message; do not retry unchanged.

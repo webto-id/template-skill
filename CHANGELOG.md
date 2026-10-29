@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.49 — 2026-10-29
+
+- **List the template over MCP** (`references/mcp.md` § Creating and editing the listing; new scopes `listings:read` and `listings:manage`): `get_listing_options` (the 13 categories, price rules, `canSellPaid` / `paidBlocker`), `list_template_listings`, `create_template_listing` (title, templateName, description, tags, category, priceIdr, packages, publish) and `update_template_listing` (copy, category, price, packages, status). Dry run by default; show the seller the exact listing and confirm only after their yes; the price is theirs to name, never yours. A PAID listing is refused while the seller has no active payment account (Pengaturan → Pembayaran) -- also on the dry run -- so relay it; free listings work meanwhile. Screenshots and re-listing a template an admin took down stay in the dashboard.
+- Token setup: tick **Listing marketplace → Kelola listing & harga** for the listing tools; `listings:write` (refresh snapshot) does not include them.
+
 ## 0.1.48 — 2026-10-29
 
 - **One upload carries up to 24 authored variants** (was 12), the same as the per-template total. An exported template with more than 12 variants (e.g. an AI Site Generation Advanced draft) goes back up in one `create_template_draft` / `update_template_draft` call. `variant-check` ≥ 0.1.59 checks the new limit; older CLIs still flag more than 12 as an error.
