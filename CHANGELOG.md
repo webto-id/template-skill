@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.48 — 2026-10-29
+
+- **One upload carries up to 24 authored variants** (was 12), the same as the per-template total. An exported template with more than 12 variants (e.g. an AI Site Generation Advanced draft) goes back up in one `create_template_draft` / `update_template_draft` call. `variant-check` ≥ 0.1.59 checks the new limit; older CLIs still flag more than 12 as an error.
+
 ## 0.1.47 — 2026-10-27
 
 - **`postBase`** (`references/manifest.md` § Article URL base; `variant-check` ≥ 0.1.58): an optional template key naming where the articles live (`/<postBase>/<slug>`: `blog` | `post` | `news` | `article` | `berita` | `artikel` | `jurnal`). Use it when the source keeps articles under `/berita/…` or `/artikel/…`; pair it with a page at that slug holding a `blog` section in `source: "database"`. Errors: an unknown base, a page using another base's slug, a `samplePosts` slug equal to a page slug. Warnings: no page at the base, or one that lists no posts. The export writes it back (only when not `blog`) and the dry run reports a change; a website bundle refuses it.

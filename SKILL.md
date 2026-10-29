@@ -85,8 +85,8 @@ Some things are correctly out of reach for a marketplace variant — not a gap t
 
 | What | Limit |
 |---|---|
-| Authored variants per UPLOAD | 12 |
-| Authored variants per TEMPLATE (total) | 24 — go past one upload's worth with a partial upload (`template.json` + just the new file) |
+| Authored variants per UPLOAD | 24 (`variant-check` 0.1.59+; older CLIs still flag more than 12) |
+| Authored variants per TEMPLATE (total) | 24 — one upload can carry all of them; later updates may add new ones only while the total stays within 24 |
 | Whole upload payload | 2 MB |
 | One `.astro` source | 128 KB |
 | One `.sample.json` | 16 KB |
