@@ -148,7 +148,8 @@ A PARTIAL of the site theme; unspecified keys get platform defaults — on a fir
   "maxWidth": "6xl",                           // "3xl" 768px | "4xl" 896 | "5xl" 1024 | "6xl" 1152 | "7xl" 1280
   "spacing": "normal",                         // "compact" | "normal" | "spacious"  (section rhythm x0.65 / x1 / x1.35)
   "textGradient": "subtle",                    // "none" | "subtle" | "vibrant"
-  "pageTransitions": "none"                    // "none" | "fade" — site-wide cross-fade between pages, added 2026-09-11
+  "pageTransitions": "none",                   // "none" | "fade" — site-wide cross-fade between pages, added 2026-09-11
+  "smoothScroll": false                        // true = smooth wheel scrolling (Lenis, run by the platform), added 2026-11-12
 }
 ```
 
@@ -164,6 +165,7 @@ These are the Style-tab settings the buyer can change later, so a conversion sho
 | `radius` | `--radius`; the theme radius scale (`rounded-sm/md/lg/xl`) derives from it. 0 = sharp. | The source's dominant corner radius on cards/buttons. |
 | `textGradient` | `--gradient-from/--gradient-to`, consumed by headlines that opt in (`bg-clip-text text-transparent` + `linear-gradient(to right, var(--gradient-from), var(--gradient-to))`). `none` collapses both to `foreground` (plain text); `subtle` = primary → primary mixed 30% toward accent; `vibrant` = primary → accent. | Default is `subtle`. Set `none` when the source's headlines are flat — otherwise a gradient headline appears that the source never had. |
 | `pageTransitions` | `fade`: CSS `@view-transition` cross-fade on navigation, zero JS, ignored by unsupported browsers and by `prefers-reduced-motion`. | Astro sources with `<ClientRouter />`, or any source with SPA-like page fades → `fade`. |
+| `smoothScroll` | `true`: smooth, inertial mouse-wheel scrolling for the whole page — one Lenis instance the platform runs, synced with GSAP ScrollTrigger. Touch, the editor and `prefers-reduced-motion` keep normal scrolling. | A source that ships Lenis, Locomotive Scroll or another smooth-scroll script → `true`, and DROP that script from the variants (a variant must never start its own). |
 
 `colorMode`, `bodyBackground` (an image or a platform SVG pattern behind a boxed page) and `fonts.headingSize`/`bodySize` round out the block; all are optional and default sensibly.
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.50 — 2026-11-12
+
+- **`theme.smoothScroll`** (`references/manifest.md` § theme; `variant-check` ≥ 0.1.60): `true` turns on smooth, inertial mouse-wheel scrolling for the whole site — one Lenis instance the platform runs, synced with GSAP ScrollTrigger. Touch, the editor and `prefers-reduced-motion` keep normal scrolling. A source that ships Lenis, Locomotive Scroll or another smooth-scroll script → set it to `true` and drop that script from the variants. Default `false`.
+
 ## 0.1.49 — 2026-10-29
 
 - **List the template over MCP** (`references/mcp.md` § Creating and editing the listing; new scopes `listings:read` and `listings:manage`): `get_listing_options` (the 13 categories, price rules, `canSellPaid` / `paidBlocker`), `list_template_listings`, `create_template_listing` (title, templateName, description, tags, category, priceIdr, packages, publish) and `update_template_listing` (copy, category, price, packages, status). Dry run by default; show the seller the exact listing and confirm only after their yes; the price is theirs to name, never yours. A PAID listing is refused while the seller has no active payment account (Pengaturan → Pembayaran) -- also on the dry run -- so relay it; free listings work meanwhile. Screenshots and re-listing a template an admin took down stay in the dashboard.
