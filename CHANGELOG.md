@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.51 — 2026-11-12
+
+- **WebGL effects carry over through OGL** (`SKILL.md` Motion and "won't be copied"; variant skill `references/webgl.md`; `variant-check` ≥ 0.1.61): a shader or image effect (ripple, shader gradient, particles) is redrawn by the variant's script with the platform's OGL over a real poster `<img>`. What still does not carry over: 3D models and anything WebGL loads by URL (glTF/GLB, KTX/Basis textures, a three.js scene).
+
 ## 0.1.50 — 2026-11-12
 
 - **`theme.smoothScroll`** (`references/manifest.md` § theme; `variant-check` ≥ 0.1.60): `true` turns on smooth, inertial mouse-wheel scrolling for the whole site — one Lenis instance the platform runs, synced with GSAP ScrollTrigger. Touch, the editor and `prefers-reduced-motion` keep normal scrolling. A source that ships Lenis, Locomotive Scroll or another smooth-scroll script → set it to `true` and drop that script from the variants. Default `false`.
