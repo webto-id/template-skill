@@ -72,10 +72,10 @@
     {
       "key": "hero-split",
       "sectionType": "hero",
-      "name": "Hero Split Kopi Senja",
-      "description": "Hero dua kolom: teks + satu foto besar, CTA tunggal.",
+      "name": "Hero Split",
+      "description": "Two-column hero: text on one side, one large photo on the other, a single CTA.",
       "mood": ["warm"],
-      "fits": "headline pendek dengan satu foto suasana yang kuat"
+      "fits": "short headline + one strong mood photo"
     }
   ]
 }

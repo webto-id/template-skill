@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.53 — 2026-11-16
+
+- **Doc and example fixes from an end-to-end test:** the platform variant catalog is linked (https://docs.webto.id/marketplace/referensi-schema/); `manifest.md` says a chrome entry without `variant` gets the platform's default design; a new rule for showcase copy (plausible placeholders, testimonials with first names only and no real person's quote, the placeholder number `6281234567890`); the demo bundle's `variants[]` entry follows the manifest rules (name = key in Title Case, English description and fits) and its hero pins the heading size (`!text-4xl`), so `variant-check site` is clean.
+
 ## 0.1.52 — 2026-11-16
 
 - **3D effects: the optional webto-3d-effects skill** (repo `webto-id/3d-effects-skill`). `SKILL.md` "Read first" and "What will not be copied" point to it for a 3D product look rebuilt from renders: a jar label that turns on scroll, a depth parallax, a scroll-scrubbed video. A bundle carries images only (`asset:` is PNG/WebP/JPG), so the scroll-video recipe ships its photo fallback and the buyer adds the MP4; the other two ship complete.
