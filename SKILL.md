@@ -23,6 +23,7 @@ The platform compiles every `.astro` **strict**, validates the whole manifest, c
 
 - `references/manifest.md` — the exact `template.json` format, `u:@<key>` refs, limits, theme extraction.
 - The **html-to-webto-variant** skill — every `.astro` here follows its rules (WVF subset, tokens, zero dead text, `--strict`). Do not guess; read it.
+- Optional: the **webto-3d-effects** skill, when the source (or the seller) wants a 3D look — a product that turns on scroll, a depth parallax, a jar label that turns. A bundle carries images only (`asset:` is PNG/WebP/JPG), so the scroll-video recipe ships its photo fallback and the buyer adds the MP4; the jar-label and depth recipes ship complete.
 
 ## Source: an Astro + Tailwind repo
 
@@ -74,7 +75,7 @@ Go through this explicitly before calling a conversion done — "looks right" sk
 
 Some things are correctly out of reach for a marketplace variant — not a gap to apologize for, a boundary to state plainly. Hand this list to whoever's writing the listing description so buyer expectations match what's actually being sold:
 
-- **3D models, and WebGL that needs anything loaded by URL** (glTF/GLB models, KTX/Basis textures, a three.js scene). Shader and image effects DO carry over through the platform's OGL (`data-uses="ogl"`, variant skill `references/webgl.md`): the source's canvas is redrawn by the variant's script over a real poster `<img>`, which is all the editor, thumbnails and reduced-motion visitors see. A `<canvas>` tag in markup is still a compile error — the script creates it.
+- **3D models, and WebGL that needs anything loaded by URL** (glTF/GLB models, KTX/Basis textures, a three.js scene). Shader and image effects DO carry over through the platform's OGL (`data-uses="ogl"`, variant skill `references/webgl.md`): the source's canvas is redrawn by the variant's script over a real poster `<img>`, which is all the editor, thumbnails and reduced-motion visitors see. A `<canvas>` tag in markup is still a compile error — the script creates it. A 3D product look is rebuilt from renders instead (the **webto-3d-effects** skill: scroll-scrubbed video, depth parallax, a jar label that turns).
 - **Components that need an npm package** — any interactivity that would require importing a library (rich carousels with physics, chart libraries) has to be rebuilt from the WVF script subset or a CSS-only equivalent, which is not always visually identical. **GSAP + ScrollTrigger are the exception:** the platform hosts them, so a source's GSAP timelines, scroll-triggered animations and pin/scrub carry over via `<script is:inline data-uses="gsap scroll-trigger">` (variant skill `wvf.md` §4a). Other animation engines and GSAP plugins (SplitText, Flip, Draggable…) still have to be rebuilt.
 - **Content that's random or different on every page load** — the renderer has no client-side data fetching; content is exactly what's in the section's saved fields.
 - **Floating/fixed chrome** (a docked nav, a fixed-position theme toggle) — `position: fixed` is a universal compile error (WVF chrome, tightened 2026-09-04), including for navbar/banner.

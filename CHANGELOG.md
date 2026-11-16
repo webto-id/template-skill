@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.52 — 2026-11-16
+
+- **3D effects: the optional webto-3d-effects skill** (repo `webto-id/3d-effects-skill`). `SKILL.md` "Read first" and "What will not be copied" point to it for a 3D product look rebuilt from renders: a jar label that turns on scroll, a depth parallax, a scroll-scrubbed video. A bundle carries images only (`asset:` is PNG/WebP/JPG), so the scroll-video recipe ships its photo fallback and the buyer adds the MP4; the other two ship complete.
+
 ## 0.1.51 — 2026-11-12
 
 - **WebGL effects carry over through OGL** (`SKILL.md` Motion and "won't be copied"; variant skill `references/webgl.md`; `variant-check` ≥ 0.1.61): a shader or image effect (ripple, shader gradient, particles) is redrawn by the variant's script with the platform's OGL over a real poster `<img>`. What still does not carry over: 3D models and anything WebGL loads by URL (glTF/GLB, KTX/Basis textures, a three.js scene).
