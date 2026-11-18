@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.54 — 2026-11-18
+
+- **`asset:` can carry a 3D variant's media.** `manifest.md`: a bundle may ship a `.glb` model (≤ 10 MB) and an `.mp4` (≤ 15 MB), ≤ 30 MB of both, beside its images; `variant-check site` 0.1.64+ checks them. `mcp.md`: declare them in `assetManifest` as `model/gltf-binary` / `video/mp4`.
+
 ## 0.1.53 — 2026-11-16
 
 - **Doc and example fixes from an end-to-end test:** the platform variant catalog is linked (https://docs.webto.id/marketplace/referensi-schema/); `manifest.md` says a chrome entry without `variant` gets the platform's default design; a new rule for showcase copy (plausible placeholders, testimonials with first names only and no real person's quote, the placeholder number `6281234567890`); the demo bundle's `variants[]` entry follows the manifest rules (name = key in Title Case, English description and fits) and its hero pins the heading size (`!text-4xl`), so `variant-check site` is clean.

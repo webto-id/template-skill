@@ -67,6 +67,8 @@ a way.
      -F "uploadSessionId=$SESSION" -F "file=@assets/hero-photo.png"
    ```
 
+   A `.glb` or `.mp4` of a 3D variant goes the same way; declare it in
+   `assetManifest` as `model/gltf-binary` / `video/mp4`.
    Never put image bytes (base64) in a tool call. Pass
    `assets: { uploadSessionId }` and the `assetManifest` to the write tool.
 3. **Dry run.** Call `create_template_draft` (or `update_template_draft` with
