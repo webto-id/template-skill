@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.56 — 2026-11-20
+
+- **Listing screenshots through the token** (`mcp.md`): upload them with `begin_listing_screenshot_upload`, then set the keys in `screenshots` on the listing. The dashboard is no longer needed for them.
+
 ## 0.1.55 — 2026-11-20
 
 - **No `ogImage` / `noindex` per page in a template** (`manifest.md`). A website's `site.json` takes them; in `template.json` they are ignored with the warning `manifest-site-share-template`, because a template's pages never carry them to the listing snapshot or a buyer's site.

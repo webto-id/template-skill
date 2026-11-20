@@ -47,12 +47,12 @@ The token never goes in the file itself — `.mcp.json` gets committed.
 | `get_listing_urls` | A listing's two public addresses (`catalogUrl`, `livePreviewUrl`), its status and snapshot freshness |
 | `list_template_listings` | The seller's template listings: `id`, `sourceSiteId`, title, templateName, description, category, tags, `priceIdr`, packages, status, `snapshot` (scope `listings:read`) |
 | `get_listing_options` | The 13 categories, the price rules and `canSellPaid` / `paidBlocker` -- whether this seller can take money (scope `listings:read`) |
-| `create_template_listing` | Put a draft on the marketplace: title, templateName, description, tags, category, price, packages, publish (scope `listings:manage`; see below) |
-| `update_template_listing` | Change a listing's copy, category, price, packages or status (scope `listings:manage`) |
+| `create_template_listing` | Put a draft on the marketplace: title, templateName, description, tags, category, price, packages, screenshots, publish (scope `listings:manage`; see below) |
+| `update_template_listing` | Change a listing's copy, category, price, packages, screenshots or status (scope `listings:manage`) |
+| `begin_listing_screenshot_upload` | Where and how to upload a listing screenshot; each upload answers a `key` (scope `listings:manage`) |
 
-Screenshots of a listing, payment accounts and re-listing a template an admin
-took down stay with the seller in the dashboard; say so instead of looking for
-a way.
+Payment accounts and re-listing a template an admin took down stay with the
+seller in the dashboard; say so instead of looking for a way.
 
 ## The loop
 
@@ -268,14 +268,43 @@ the draft → **Jual di Marketplace**).
    upload.
 4. Show the seller the listing exactly as it will appear -- title, template
    name, description, category, tags, price (and what they receive after
-   `platformFeeIdr`), and whether it goes on sale now (`publish: true`) or
-   stays a draft listing. Only after an explicit yes, the same call with
-   `confirm: true`. The result carries `catalogUrl` / `livePreviewUrl` once it
-   is active.
+   `platformFeeIdr`), the screenshots, and whether it goes on sale now
+   (`publish: true`) or stays a draft listing. Only after an explicit yes, the
+   same call with `confirm: true`. The result carries `catalogUrl` /
+   `livePreviewUrl` once it is active.
+
+### Screenshots
+
+Up to 6 images, in display order; the first is the catalog card image. Without
+any, the card shows the platform's own capture of the template, so screenshots
+are optional.
+
+1. Use your own captures of the draft (the 390 / 768 / 1280 px pages you
+   already looked at). JPG, PNG or WebP, at most 2 MB each: resize a full-page
+   capture to at most 1600 px wide and save it as WebP. 50 MB per seller in
+   total.
+2. `begin_listing_screenshot_upload` gives the URL. POST each file yourself,
+   with the same bearer token, and set the type explicitly:
+
+   ```bash
+   curl -X POST "$URL" -H "Authorization: Bearer $WEBTO_TOKEN" \
+     -F "file=@shots/home-1280.webp;type=image/webp"
+   # → { "key": "users/<you>/marketplace/<uuid>.webp" }
+   ```
+
+   Not `begin_asset_upload`: that one is for the bundle's own images.
+3. Pass the keys as `screenshots` to `create_template_listing`, or to
+   `update_template_listing` as the listing's FULL new list (keys it already
+   shows, from `list_template_listings`, plus new ones). Only keys from your
+   own uploads are accepted; a URL is refused. The dry run reports
+   `screenshots` `{ before, after, added, removed }`: show the seller what is
+   added and removed before `confirm: true`.
+4. Omitting `screenshots` leaves them as they are. `null` removes them all; an
+   empty list is refused. A screenshot taken off the listing is deleted.
 
 Later changes go through `update_template_listing` with the listing `id`
 (`list_template_listings`): send only the fields that change, dry-run, show
-`changes`, confirm after a yes. `status` is `draft`, `active` or `disabled`;
+`changes` (and `screenshots` when they change), confirm after a yes. `status` is `draft`, `active` or `disabled`;
 raising a free listing to a paid price meets the same payment-account check.
 A listing an admin took down (`unlisted`) keeps its status -- only an admin
 re-activates it. Changing the DRAFT that a listing sells is a different step:
