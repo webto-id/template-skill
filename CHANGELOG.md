@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.55 — 2026-11-20
+
+- **No `ogImage` / `noindex` per page in a template** (`manifest.md`). A website's `site.json` takes them; in `template.json` they are ignored with the warning `manifest-site-share-template`, because a template's pages never carry them to the listing snapshot or a buyer's site.
+
 ## 0.1.54 — 2026-11-18
 
 - **`asset:` can carry a 3D variant's media.** `manifest.md`: a bundle may ship a `.glb` model (≤ 10 MB) and an `.mp4` (≤ 15 MB), ≤ 30 MB of both, beside its images; `variant-check site` 0.1.64+ checks them. `mcp.md`: declare them in `assetManifest` as `model/gltf-binary` / `video/mp4`.
