@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.57 — 2026-11-23
+
+- **No `llmsTxt` in a template** (`manifest.md`). A website's `site.json` may carry its own `/llms.txt`, but it describes one business; the upload ignores it in a template with a warning, and `variant-check site` (0.1.67+) says the same. Describe the template in `aiDescription` instead.
+
 ## 0.1.56 — 2026-11-20
 
 - **Listing screenshots through the token** (`mcp.md`): upload them with `begin_listing_screenshot_upload`, then set the keys in `screenshots` on the listing. The dashboard is no longer needed for them.
